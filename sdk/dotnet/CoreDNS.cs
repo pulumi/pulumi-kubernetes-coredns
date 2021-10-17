@@ -7,12 +7,12 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.ChartCertManager
+namespace Pulumi.KubernetesCoreDNS
 {
     /// <summary>
     /// Enable fast and flexible in-cluster DNS.
     /// </summary>
-    [ChartCertManagerResourceType("kubernetes-coredns:index:CoreDNS")]
+    [KubernetesCoreDNSResourceType("kubernetes-coredns:index:CoreDNS")]
     public partial class CoreDNS : Pulumi.ComponentResource
     {
         /// <summary>

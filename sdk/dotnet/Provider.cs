@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.ChartCertManager
+namespace Pulumi.KubernetesCoreDNS
 {
-    [ChartCertManagerResourceType("pulumi:providers:kubernetes-coredns")]
+    [KubernetesCoreDNSResourceType("pulumi:providers:kubernetes-coredns")]
     public partial class Provider : Pulumi.ProviderResource
     {
         /// <summary>

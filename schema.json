@@ -683,7 +683,7 @@
     "language": {
         "csharp": {
             "namespaces": {
-                "kubernetes-coredns": "ChartCertManager"
+                "kubernetes-coredns": "KubernetesCoreDNS"
             },
             "packageReferences": {
                 "Pulumi": "3.*",
