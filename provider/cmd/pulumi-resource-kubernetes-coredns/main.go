@@ -17,8 +17,8 @@
 package main
 
 import (
-	"github.com/joeduffy/pulumi-kubernetes-coredns/pkg/provider"
-	"github.com/joeduffy/pulumi-kubernetes-coredns/pkg/version"
+	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/provider"
+	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/version"
 )
 
 func main() {

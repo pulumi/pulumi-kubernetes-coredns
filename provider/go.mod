@@ -1,4 +1,4 @@
-module github.com/joeduffy/pulumi-kubernetes-coredns
+module github.com/pulumi/pulumi-kubernetes-coredns
 
 go 1.15
 
