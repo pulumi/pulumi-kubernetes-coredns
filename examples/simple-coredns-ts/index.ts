@@ -1,6 +1,9 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as coredns from "@pulumi/kubernetes-coredns";
 
+// Create a sandbox namespace.
+const ns = new k8s.core.v1.Namespace("sandbox-ns");
+
 const dns = new coredns.CoreDNS("dns", {
     servers: [{
         zones: [
@@ -23,6 +26,9 @@ const dns = new coredns.CoreDNS("dns", {
             },
         ],
     }],
+    helmOptions: {
+        namespace: ns.metadata.name,
+    },
 });
 
 export const corednsStatus = dns.status;
