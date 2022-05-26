@@ -1,5 +1,14 @@
 {
     "name": "kubernetes-coredns",
+    "displayName": "Kubernetes CoreDNS",
+    "keywords": [
+        "pulumi",
+        "kubernetes",
+        "coredns",
+        "kind/component",
+        "category/infrastructure"
+    ],
+    "publisher": "Pulumi",
     "resources": {
         "kubernetes-coredns:index:CoreDNS": {
             "description": "Enable fast and flexible in-cluster DNS.",
