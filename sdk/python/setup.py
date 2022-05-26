@@ -44,10 +44,12 @@ setup(name='pulumi_kubernetes_coredns',
       cmdclass={
           'install': InstallPluginCommand,
       },
+      keywords='pulumi kubernetes coredns kind/component category/infrastructure',
       packages=find_packages(),
       package_data={
           'pulumi_kubernetes_coredns': [
               'py.typed',
+              'pulumi-plugin.json',
           ]
       },
       install_requires=[
