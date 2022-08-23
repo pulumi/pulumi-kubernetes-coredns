@@ -24,19 +24,21 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CoreDNS installs a fully-configured CoreDNS stack in Kubernetes.
-type CoreDNS struct {
+type CoreDNS struct{}
+
+// State installs a fully-configured State stack in Kubernetes.
+type State struct {
 	pulumi.ResourceState
 	Status helmv3.ReleaseStatusOutput `pulumi:"status" pschema:"out"`
 }
 
-func (c *CoreDNS) SetOutputs(out helmv3.ReleaseStatusOutput) { c.Status = out }
-func (c *CoreDNS) Type() string                              { return ComponentName }
-func (c *CoreDNS) DefaultChartName() string                  { return "coredns" }
-func (c *CoreDNS) DefaultRepoURL() string                    { return "https://coredns.github.io/helm" }
+func (c *State) SetOutputs(out helmv3.ReleaseStatusOutput) { c.Status = out }
+func (c *State) Type() string                              { return ComponentName }
+func (c *State) DefaultChartName() string                  { return "coredns" }
+func (c *State) DefaultRepoURL() string                    { return "https://coredns.github.io/helm" }
 
-// CoreDNSArgs contains the set of arguments for creating a CoreDNS component resource.
-type CoreDNSArgs struct {
+// Args contains the set of arguments for creating a CoreDNS component resource.
+type Args struct {
 	// The image to pull.
 	CoreDNSImage *CoreDNSImage `pulumi:"image"`
 	// Number of replicas.
@@ -108,7 +110,7 @@ type CoreDNSArgs struct {
 	HelmOptions *helmbase.ReleaseType `pulumi:"helmOptions" pschema:"ref=#/types/chart-coredns:index:Release" json:"-"`
 }
 
-func (args *CoreDNSArgs) R() **helmbase.ReleaseType { return &args.HelmOptions }
+func (args *Args) R() **helmbase.ReleaseType { return &args.HelmOptions }
 
 type CoreDNSImage struct {
 	// The image repository to pull from.

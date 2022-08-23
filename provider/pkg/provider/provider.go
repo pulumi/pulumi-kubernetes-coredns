@@ -17,6 +17,9 @@ package provider
 import (
 	helmbase "github.com/pulumi/pulumi-go-helmbase"
 
+	p "github.com/pulumi/pulumi-go-provider"
+	"github.com/pulumi/pulumi-go-provider/middleware"
+	"github.com/pulumi/pulumi-go-provider/middleware/schema"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -27,6 +30,57 @@ const (
 	ProviderName  = "kubernetes-coredns"
 	ComponentName = ProviderName + ":index:CoreDNS"
 )
+
+func Provider() p.Provider {
+	return schema.Wrap(&middleware.Scaffold{
+		ConstructFn: func(pctx p.Context, typ string, name string,
+			ctx *pulumi.Context, inputs pp.ConstructInputs, opts pulumi.ResourceOption) (pulumi.ComponentResource, error) {
+			state := &State{}
+			_, err := helmbase.Construct(ctx, state, typ, name, &Args{}, inputs, opts)
+			if err != nil {
+				return nil, err
+			}
+			return state, nil
+		},
+	}).WithDisplayName("Kubernetes CoreDNS").
+		WithKeywords([]string{
+			"pulumi",
+			"kubernetes",
+			"coredns",
+			"kind/component",
+			"category/infrastructure",
+		}).
+		WithPublisher("Pulumi").
+		WithLanguageMap(map[string]any{
+			"csharp": map[string]map[string]string{
+				"namespaces": {
+					"kubernetes-coredns": "KubernetesCoreDNS",
+				},
+				"packageReferences": {
+					"Pulumi":            "3.*",
+					"Pulumi.Kubernetes": "3.*",
+				},
+			},
+			"go": map[string]any{
+				"generateResourceContainerTypes": true,
+				"importBasePath":                 "github.com/pulumi/pulumi-kubernetes-coredns/sdk/go/kubernetes-coredns",
+			},
+			"nodejs": map[string]map[string]string{
+				"dependencies": {
+					"@pulumi/kubernetes": "^3.7.1",
+				},
+				"devDependencies": {
+					"typescript": "^3.7.0",
+				},
+			},
+			"python": map[string]map[string]string{
+				"requires": {
+					"pulumi":            ">=3.0.0,<4.0.0",
+					"pulumi-kubernetes": ">=3.7.1,<4.0.0",
+				},
+			},
+		})
+}
 
 // Serve launches the gRPC server for the resource provider.
 func Serve(version string, schema []byte) {
@@ -39,5 +93,5 @@ func Serve(version string, schema []byte) {
 // creates, registers, and returns the resulting object.
 func Construct(ctx *pulumi.Context, typ, name string, inputs pp.ConstructInputs,
 	opts pulumi.ResourceOption) (*pp.ConstructResult, error) {
-	return helmbase.Construct(ctx, &CoreDNS{}, typ, name, &CoreDNSArgs{}, inputs, opts)
+	return helmbase.Construct(ctx, &State{}, typ, name, &Args{}, inputs, opts)
 }
