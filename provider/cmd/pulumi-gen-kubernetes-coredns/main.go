@@ -21,7 +21,10 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/blang/semver"
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/provider"
+	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/version"
 	dotnetgen "github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
 	gogen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
 	nodejsgen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
@@ -30,21 +33,21 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 4 {
-		fmt.Printf("Usage: %s <language> <out-dir> <schema-file>\n", os.Args[0])
+	if len(os.Args) < 3 {
+		fmt.Printf("Usage: %s <language> <out-dir> \n", os.Args[0])
 		os.Exit(1)
 	}
 
-	language, outdir, schemaPath := os.Args[1], os.Args[2], os.Args[3]
+	language, outdir := os.Args[1], os.Args[2]
 
-	err := emitSDK(language, outdir, schemaPath)
+	err := emitSDK(language, outdir)
 	if err != nil {
 		fmt.Printf("Failed: %s", err.Error())
 	}
 }
 
-func emitSDK(language, outdir, schemaPath string) error {
-	pkg, err := readSchema(schemaPath)
+func emitSDK(language, outdir string) error {
+	pkg, err := readSchema(version.Version)
 	if err != nil {
 		return err
 	}
@@ -62,6 +65,15 @@ func emitSDK(language, outdir, schemaPath string) error {
 		generator = func() (map[string][]byte, error) { return nodejsgen.GeneratePackage(tool, pkg, extraFiles) }
 	case "python":
 		generator = func() (map[string][]byte, error) { return pygen.GeneratePackage(tool, pkg, extraFiles) }
+	case "schema":
+		generator = func() (map[string][]byte, error) {
+			bytes, err := json.MarshalIndent(pkg, "", "    ")
+			if err != nil {
+				return nil, err
+			}
+			return map[string][]byte{"schema.json": bytes}, nil
+		}
+
 	default:
 		return errors.Errorf("Unrecognized language %q", language)
 	}
@@ -80,14 +92,14 @@ func emitSDK(language, outdir, schemaPath string) error {
 	return nil
 }
 
-func readSchema(schemaPath string) (*schema.Package, error) {
-	schemaBytes, err := ioutil.ReadFile(schemaPath)
+func readSchema(version string) (*schema.Package, error) {
+	schemaBytes, err := provider.Schema(semver.MustParse(version))
 	if err != nil {
 		return nil, errors.Wrap(err, "reading schema")
 	}
 
 	var spec schema.PackageSpec
-	if err = json.Unmarshal(schemaBytes, &spec); err != nil {
+	if err = json.Unmarshal([]byte(schemaBytes), &spec); err != nil {
 		return nil, errors.Wrap(err, "unmarshalling schema")
 	}
 

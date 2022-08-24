@@ -16,6 +16,7 @@ package provider
 
 import (
 	helmbase "github.com/pulumi/pulumi-go-helmbase"
+	"github.com/pulumi/pulumi-go-provider/infer"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/apps/v1"
 	autoscaling "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/autoscaling/v2beta2"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
@@ -24,12 +25,22 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-type CoreDNS struct{}
+type CoreDNS struct {
+	infer.ComponentResource[Args, *State]
+}
+
+func (c *CoreDNS) Annotate(a infer.Annotator) {
+	a.Describe(&c, "Enable fast and flexible in-cluster DNS.")
+}
 
 // State installs a fully-configured State stack in Kubernetes.
 type State struct {
 	pulumi.ResourceState
-	Status helmv3.ReleaseStatusOutput `pulumi:"status" pschema:"out"`
+	Status helmv3.ReleaseStatusOutput `pulumi:"status" pschema:"out" provider:"type=index:ReleaseStatus"`
+}
+
+func (s *State) Annotate(a infer.Annotator) {
+	a.Describe(&s.Status, "Detailed information about the status of the underlying Helm deployment.")
 }
 
 func (c *State) SetOutputs(out helmv3.ReleaseStatusOutput) { c.Status = out }
@@ -44,10 +55,16 @@ type Args struct {
 	// Number of replicas.
 	ReplicaCount *int `pulumi:"replicaCount"`
 	// Container resource limits.
-	Resources *corev1.ResourceRequirements `pulumi:"resources" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:ResourceRequirements"`
+	Resources *corev1.ResourceRequirements `pulumi:"resources"
+											pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:ResourceRequirements"
+											provider:"type=kubernetes@3.8.1:core/v1:ResourceRequirements"`
 	// Create HorizontalPodAutoscaler object.
-	Autoscaling   *autoscaling.HorizontalPodAutoscalerSpec `pulumi:"autoscaling" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec"`
-	RollingUpdate *appsv1.RollingUpdateDeployment          `pulumi:"rollingUpdate" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"`
+	Autoscaling *autoscaling.HorizontalPodAutoscalerSpec `pulumi:"autoscaling"
+															pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec"
+															provider:"type=kubernetes@3.8.1:autoscaling/v2beta2:HorizontalPodAutoscalerSpec"`
+	RollingUpdate *appsv1.RollingUpdateDeployment `pulumi:"rollingUpdate"
+												   pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
+												   provider:"type=kubernetes@3.8.1:apps/v1:RollingUpdateDeployment"`
 	// Under heavy load it takes more that standard time to remove Pod endpoint from a cluster.
 	// This will delay termination of our pod by `preStopSleep`. To make sure kube-proxy has
 	// enough time to catch up.
@@ -74,27 +91,43 @@ type Args struct {
 	// https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
 	CoreDNSServers *[]CoreDNSServer `pulumi:"servers"`
 	// Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config.
-	LivenessProbe *corev1.Probe `pulumi:"livenessProbe" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"`
+	LivenessProbe *corev1.Probe `pulumi:"livenessProbe"
+								 pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"
+								 provider:"typekubernetes@3.8.1:core/v1:Probe"`
 	// Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config.
-	ReadinessProbe *corev1.Probe `pulumi:"readinessProbe" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"`
+	ReadinessProbe *corev1.Probe `pulumi:"readinessProbe"
+								  pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"
+								  provider:"typekubernetes@3.8.1:core/v1:Probe"`
 	// Affinity settings for pod assignment	.
-	Affinity *corev1.Affinity `pulumi:"affinity" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity"`
+	Affinity *corev1.Affinity `pulumi:"affinity"
+							   pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity"
+							   provider:"type=kubernetes@v3.8.1:core/v1:Affinity"`
 	// Node labels for pod assignment.
 	NodeSelector *map[string]string `pulumi:"nodeSelector"`
 	// Tolerations for pod assignment.
-	Tolerations *[]corev1.Toleration `pulumi:"tolerations" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Toleration"`
+	Tolerations *[]corev1.Toleration `pulumi:"tolerations"
+									  pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Toleration"
+									  provider:"type=kubernetes@3.8.1:core/v1:Toleration"`
 	// Optional PodDisruptionBudget.
-	PodDisruptionBudget *policyv1.PodDisruptionBudgetSpec `pulumi:"podDisruptionBudget" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec"`
+	PodDisruptionBudget *policyv1.PodDisruptionBudgetSpec `pulumi:"podDisruptionBudget"
+														   pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec"
+														   provider:"type=kubernetes@3.8.1:policy/v1:PodDisruptionBudgetSpec"`
 	// Configure custom Zone files.
 	ZoneFiles *[]CoreDNSZoneFile `pulumi:"zoneFiles"`
 	// Optional array of extra volumes to create.
-	ExtraVolumes *[]corev1.Volume `pulumi:"extraVolumes" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Volume"`
+	ExtraVolumes *[]corev1.Volume `pulumi:"extraVolumes"
+								   pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Volume"
+								   provider:"type=kubernetes@3.8.1:core/v1:Volume"`
 	// Optional array of mount points for extraVolumes.
-	ExtraVolumeMounts *[]corev1.VolumeMount `pulumi:"extraVolumeMounts" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"`
+	ExtraVolumeMounts *[]corev1.VolumeMount `pulumi:"extraVolumeMounts"
+											 pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
+											 provider:"type=kubernetes@3.8.1:core/v1:VolumeMount"`
 	// Optional array of secrets to mount inside coredns container.
 	// Possible usecase: need for secure connection with etcd backend.
 	// Optional array of mount points for extraVolumes.
-	ExtraSecrets *[]corev1.VolumeMount `pulumi:"extraSecrets" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"`
+	ExtraSecrets *[]corev1.VolumeMount `pulumi:"extraSecrets"
+										pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
+										provider:"type=kubernetes@3.8.1:core/v1:VolumeMount"`
 	// Custom labels to apply to Deployment, Pod, Configmap, Service, ServiceMonitor. Including autoscaler if enabled.
 	CustomLabels *map[string]string
 	// Alternative configuration for HPA deployment if wanted.
@@ -107,7 +140,9 @@ type Args struct {
 
 	// HelmOptions is an escape hatch that lets the end user control any aspect of the
 	// Helm deployment. This exposes the entirety of the underlying Helm Release component args.
-	HelmOptions *helmbase.ReleaseType `pulumi:"helmOptions" pschema:"ref=#/types/chart-coredns:index:Release" json:"-"`
+	HelmOptions *helmbase.ReleaseType `pulumi:"helmOptions"
+									   pschema:"ref=#/types/chart-coredns:index:Release" json:"-"
+                                       provider:"type=index:Release"`
 }
 
 func (args *Args) R() **helmbase.ReleaseType { return &args.HelmOptions }
@@ -216,7 +251,9 @@ type CoreDNSHPA struct {
 	Enabled     *bool                   `pulumi:"enabled"`
 	MinReplicas *int                    `pulumi:"minReplicas"`
 	MaxReplicas *int                    `pulumi:"maxReplicas"`
-	Metrics     *autoscaling.MetricSpec `pulumi:"metrics" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"`
+	Metrics     *autoscaling.MetricSpec `pulumi:"metrics"
+										 pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
+										 provider:"type=kubernetes@3.8.1:autoscaling/v2beta2:MetricSpec"`
 }
 
 type CoreDNSAutoscaler struct {

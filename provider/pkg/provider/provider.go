@@ -15,12 +15,16 @@
 package provider
 
 import (
+	"github.com/blang/semver"
 	helmbase "github.com/pulumi/pulumi-go-helmbase"
 
 	p "github.com/pulumi/pulumi-go-provider"
+	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi-go-provider/integration"
 	"github.com/pulumi/pulumi-go-provider/middleware"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	pp "github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
@@ -42,7 +46,12 @@ func Provider() p.Provider {
 			}
 			return state, nil
 		},
-	}).WithDisplayName("Kubernetes CoreDNS").
+	}).
+		WithResources(infer.Component[*CoreDNS, Args, *State]()).
+		WithModuleMap(map[tokens.ModuleName]tokens.ModuleName{
+			"provider": "index",
+		}).
+		WithDisplayName("Kubernetes CoreDNS").
 		WithKeywords([]string{
 			"pulumi",
 			"kubernetes",
@@ -80,6 +89,12 @@ func Provider() p.Provider {
 				},
 			},
 		})
+}
+
+func Schema(version semver.Version) (string, error) {
+	s, err := integration.NewServer(ProviderName, version, Provider()).
+		GetSchema(p.GetSchemaRequest{})
+	return s.Schema, err
 }
 
 // Serve launches the gRPC server for the resource provider.
