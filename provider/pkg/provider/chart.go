@@ -118,7 +118,7 @@ type Args struct {
 
 	// HelmOptions is an escape hatch that lets the end user control any aspect of the
 	// Helm deployment. This exposes the entirety of the underlying Helm Release component args.
-	HelmOptions *helmbase.ReleaseType `pulumi:"helmOptions,optional" pschema:"ref=#/types/chart-coredns:index:Release" json:"-" provider:"type=index:Release"`
+	HelmOptions *helmbase.ReleaseType `pulumi:"helmOptions,optional" pschema:"ref=#/types/chart-coredns:index:Release" json:"-" provider:"type=external@0.0.0:index:Release"`
 }
 
 func (args *Args) Annotate(a infer.Annotator) {
