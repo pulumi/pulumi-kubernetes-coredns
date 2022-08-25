@@ -17,10 +17,15 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/provider"
+	"github.com/blang/semver"
+	p "github.com/pulumi/pulumi-go-provider"
+
+	coredns "github.com/pulumi/pulumi-kubernetes-coredns/pkg/provider"
 	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/version"
 )
 
 func main() {
-	provider.Serve(version.Version, pulumiSchema)
+	p.RunProvider(coredns.ProviderName,
+		semver.MustParse(version.Version),
+		coredns.Provider())
 }
