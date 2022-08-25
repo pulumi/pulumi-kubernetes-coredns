@@ -15,24 +15,18 @@
 package provider
 
 import (
-	"encoding/json"
-	"fmt"
-	"sync"
-
 	"github.com/blang/semver"
 	helmbase "github.com/pulumi/pulumi-go-helmbase"
 
 	p "github.com/pulumi/pulumi-go-provider"
-	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/integration"
-	"github.com/pulumi/pulumi-go-provider/middleware"
-	"github.com/pulumi/pulumi-go-provider/middleware/schema"
-	pschema "github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	pp "github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
+
+	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/provider/chart"
 )
 
 const (
@@ -41,8 +35,8 @@ const (
 )
 
 func Provider() p.Provider {
-	schema := schema.Wrap(nil).
-		WithResources(infer.Component[*CoreDNS, Args, *State]()).
+	chart, schema := chart.New[*CoreDNS, *Args, *State]()
+	schema.
 		WithModuleMap(map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
 		}).
@@ -84,77 +78,7 @@ func Provider() p.Provider {
 				},
 			},
 		})
-	var cachedSchema string
-	var schemaMutex sync.Mutex
-	return &middleware.Scaffold{
-		ConstructFn: func(pctx p.Context, typ string, name string,
-			ctx *pulumi.Context, inputs pp.ConstructInputs, opts pulumi.ResourceOption) (pulumi.ComponentResource, error) {
-			state := &State{}
-			_, err := helmbase.Construct(ctx, state, typ, name, &Args{}, inputs, opts)
-			if err != nil {
-				return nil, err
-			}
-			return state, nil
-		},
-		GetSchemaFn: func(ctx p.Context, gsr p.GetSchemaRequest) (p.GetSchemaResponse, error) {
-			schemaMutex.Lock()
-			defer schemaMutex.Unlock()
-			if cachedSchema == "" {
-				s, err := schema.GetSchema(ctx, gsr)
-				if err != nil {
-					return p.GetSchemaResponse{}, err
-				}
-				var spec pschema.PackageSpec
-				err = json.Unmarshal([]byte(s.Schema), &spec)
-				if err != nil {
-					return p.GetSchemaResponse{}, err
-				}
-				pkgName := ctx.RuntimeInformation().PackageName
-
-				// Fix the type ref
-				r := spec.Resources[fmt.Sprintf("%s:index:CoreDNS", pkgName)]
-				r.InputProperties["helmOptions"] = pschema.PropertySpec{
-					Description: "HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.",
-					TypeSpec: pschema.TypeSpec{
-						Ref: fmt.Sprintf("#/types/%s:index:Release", pkgName),
-					},
-				}
-				spec.Resources[fmt.Sprintf("%s:index:CoreDNS", pkgName)] = r
-				for k, v := range r.InputProperties {
-					var makePlain func(p *pschema.TypeSpec)
-					makePlain = func(p *pschema.TypeSpec) {
-						if p == nil {
-							return
-						}
-						p.Plain = false
-						makePlain(p.AdditionalProperties)
-						makePlain(p.Items)
-						for i, v := range p.OneOf {
-							makePlain(&v)
-							p.OneOf[i] = v
-						}
-					}
-					makePlain(&v.TypeSpec)
-					r.InputProperties[k] = v
-				}
-
-				// Add the release type manually
-				spec.Types[pkgName+":index:Release"] = specOf(releaseJSON)
-				spec.Types[pkgName+":index:ReleaseStatus"] = specOf(releaseStatusJSON)
-				spec.Types[pkgName+":index:RepositoryOpts"] = specOf(repositoryOptsJSON)
-				delete(spec.Types, pkgName+":v3:ReleaseStatus")
-
-				bytes, err := json.Marshal(spec)
-				if err != nil {
-					return p.GetSchemaResponse{}, err
-				}
-				cachedSchema = string(bytes)
-			}
-			return p.GetSchemaResponse{
-				Schema: cachedSchema,
-			}, nil
-		},
-	}
+	return chart
 }
 
 func Schema(version semver.Version) (string, error) {

@@ -26,7 +26,7 @@ import (
 )
 
 type CoreDNS struct {
-	infer.ComponentResource[Args, *State]
+	infer.ComponentResource[*Args, *State]
 }
 
 func (c *CoreDNS) Annotate(a infer.Annotator) {
