@@ -120,10 +120,29 @@ func Provider() p.Provider {
 					},
 				}
 				spec.Resources[fmt.Sprintf("%s:index:CoreDNS", pkgName)] = r
+				for k, v := range r.InputProperties {
+					var makePlain func(p *pschema.TypeSpec)
+					makePlain = func(p *pschema.TypeSpec) {
+						if p == nil {
+							return
+						}
+						p.Plain = false
+						makePlain(p.AdditionalProperties)
+						makePlain(p.Items)
+						for i, v := range p.OneOf {
+							makePlain(&v)
+							p.OneOf[i] = v
+						}
+					}
+					makePlain(&v.TypeSpec)
+					r.InputProperties[k] = v
+				}
 
 				// Add the release type manually
 				spec.Types[pkgName+":index:Release"] = specOf(releaseJSON)
+				spec.Types[pkgName+":index:ReleaseStatus"] = specOf(releaseStatusJSON)
 				spec.Types[pkgName+":index:RepositoryOpts"] = specOf(repositoryOptsJSON)
+				delete(spec.Types, pkgName+":v3:ReleaseStatus")
 
 				bytes, err := json.Marshal(spec)
 				if err != nil {

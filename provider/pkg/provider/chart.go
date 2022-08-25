@@ -85,9 +85,9 @@ type Args struct {
 	// https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
 	CoreDNSServers *[]CoreDNSServer `pulumi:"servers,optional"`
 	// Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config.
-	LivenessProbe *corev1.Probe `pulumi:"livenessProbe,optional" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe" provider:"typekubernetes@3.8.1:core/v1:Probe"`
+	LivenessProbe *corev1.Probe `pulumi:"livenessProbe,optional" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe" provider:"type=kubernetes@3.8.1:core/v1:Probe"`
 	// Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config.
-	ReadinessProbe *corev1.Probe `pulumi:"readinessProbe,optional" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe" provider:"typekubernetes@3.8.1:core/v1:Probe"`
+	ReadinessProbe *corev1.Probe `pulumi:"readinessProbe,optional" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe" provider:"type=kubernetes@3.8.1:core/v1:Probe"`
 	// Affinity settings for pod assignment	.
 	Affinity *corev1.Affinity `pulumi:"affinity,optional" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity" provider:"type=kubernetes@v3.8.1:core/v1:Affinity"`
 	// Node labels for pod assignment.
@@ -147,6 +147,7 @@ func (args *Args) Annotate(a infer.Annotator) {
 	a.Describe(&args.ZoneFiles, "Configure custom Zone files.")
 	a.Describe(&args.ExtraVolumes, "Optional array of extra volumes to create.")
 	a.Describe(&args.ExtraVolumeMounts, "Optional array of mount points for extraVolumes.")
+	a.Describe(&args.ExtraSecrets, "Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.")
 	a.Describe(&args.HPA, "Alternative configuration for HPA deployment if wanted.")
 	a.Describe(&args.Autoscaler, "Configue a cluster-proportional-autoscaler for coredns. See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler.")
 	a.Describe(&args.Deployment, "Configure the CoreDNS Deployment.")

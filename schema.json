@@ -1,6 +1,7 @@
 {
     "name": "kubernetes-coredns",
     "displayName": "Kubernetes CoreDNS",
+    "version": "0.0.1",
     "keywords": [
         "pulumi",
         "kubernetes",
@@ -9,167 +10,317 @@
         "category/infrastructure"
     ],
     "publisher": "Pulumi",
-    "resources": {
-        "kubernetes-coredns:index:CoreDNS": {
-            "description": "Enable fast and flexible in-cluster DNS.",
-            "isComponent": true,
-            "inputProperties": {
-                "affinity": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity",
-                    "description": "Affinity settings for pod assignment\t."
+    "language": {
+        "csharp": {
+            "namespaces": {
+                "kubernetes-coredns": "KubernetesCoreDNS"
+            },
+            "packageReferences": {
+                "Pulumi": "3.*",
+                "Pulumi.Kubernetes": "3.*"
+            }
+        },
+        "go": {
+            "generateResourceContainerTypes": true,
+            "importBasePath": "github.com/pulumi/pulumi-kubernetes-coredns/sdk/go/kubernetes-coredns"
+        },
+        "nodejs": {
+            "dependencies": {
+                "@pulumi/kubernetes": "^3.7.1"
+            },
+            "devDependencies": {
+                "typescript": "^3.7.0"
+            }
+        },
+        "python": {
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0",
+                "pulumi-kubernetes": "\u003e=3.7.1,\u003c4.0.0"
+            }
+        }
+    },
+    "config": {},
+    "types": {
+        "kubernetes-coredns:index:CoreDNSAutoscaler": {
+            "properties": {
+                "coresPerReplica": {
+                    "type": "integer",
+                    "description": "Number of cores in the cluster per coredns replica."
                 },
-                "autoscaler": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSAutoscaler",
-                    "description": "Configue a cluster-proportional-autoscaler for coredns. See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler."
-                },
-                "autoscaling": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec",
-                    "description": "Create HorizontalPodAutoscaler object."
-                },
-                "deployment": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSDeployment",
-                    "description": "Configure the CoreDNS Deployment."
-                },
-                "extraSecrets": {
-                    "description": "Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.",
-                    "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
-                    },
-                    "type": "array"
-                },
-                "extraVolumeMounts": {
-                    "description": "Optional array of mount points for extraVolumes.",
-                    "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
-                    },
-                    "type": "array"
-                },
-                "extraVolumes": {
-                    "description": "Optional array of extra volumes to create.",
-                    "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Volume"
-                    },
-                    "type": "array"
-                },
-                "helmOptions": {
-                    "$ref": "#/types/kubernetes-coredns:index:Release",
-                    "description": "HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args."
-                },
-                "hpa": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSHPA",
-                    "description": "Alternative configuration for HPA deployment if wanted."
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enabled the cluster-proportional-autoscaler."
                 },
                 "image": {
                     "$ref": "#/types/kubernetes-coredns:index:CoreDNSImage",
-                    "description": "The image to pull."
+                    "description": "The image to pull from for the autoscaler."
                 },
-                "isClusterService": {
-                    "description": "Specifies whether chart should be deployed as cluster-service or normal k8s app.",
+                "includeUnschedulableNodes": {
+                    "type": "boolean",
+                    "description": "Whether to include unschedulable nodes in the nodes/cores calculations - this requires version 1.8.0+ of the autoscaler."
+                },
+                "max": {
+                    "type": "integer",
+                    "description": "Max size of replicaCount"
+                },
+                "min": {
+                    "type": "integer",
+                    "description": "Min size of replicaCount"
+                },
+                "nodesPerReplica": {
+                    "type": "integer",
+                    "description": "Number of nodes in the cluster per coredns replica."
+                },
+                "preventSinglePointFailure": {
+                    "type": "boolean",
+                    "description": "If true does not allow single points of failure to form."
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSDeployment": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Optionally disable the main deployment and its respective resources."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the deployment if deployment.enabled is true. Otherwise the name of an existing deployment for the autoscaler or HPA to target."
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSHPA": {
+            "properties": {
+                "enabled": {
                     "type": "boolean"
                 },
-                "livenessProbe": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe",
-                    "description": "Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config."
-                },
-                "nodeSelector": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Node labels for pod assignment.",
-                    "type": "object"
-                },
-                "podAnnotations": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Optional Pod only Annotations.",
-                    "type": "object"
-                },
-                "podDisruptionBudget": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec",
-                    "description": "Optional PodDisruptionBudget."
-                },
-                "preStopSleep": {
-                    "description": "Under heavy load it takes more that standard time to remove Pod endpoint from a cluster. This will delay termination of our pod by `preStopSleep`. To make sure kube-proxy has enough time to catch up.",
+                "maxReplicas": {
                     "type": "integer"
                 },
-                "priorityClassName": {
-                    "description": "Optional priority class to be used for the coredns pods. Used for autoscaler if autoscaler.priorityClassName not set.",
-                    "type": "string"
+                "metrics": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
                 },
-                "prometheus": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSPrometheus",
-                    "description": "Configure Prometheus installation."
-                },
-                "rbac": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSRBAC",
-                    "description": "Configure CoreDNS RBAC resources."
-                },
-                "readinessProbe": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe",
-                    "description": "Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config."
-                },
-                "replicaCount": {
-                    "description": "Number of replicas.",
+                "minReplicas": {
                     "type": "integer"
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSImage": {
+            "properties": {
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "Image pull policy."
                 },
-                "resources": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:ResourceRequirements",
-                    "description": "Container resource limits."
-                },
-                "rollingUpdate": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
-                },
-                "servers": {
-                    "description": "Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends: https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options",
+                "pullSecrets": {
+                    "type": "array",
                     "items": {
-                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSServer"
+                        "type": "string"
                     },
-                    "type": "array"
+                    "description": "Specify container image pull secrets."
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "The image repository to pull from."
+                },
+                "tag": {
+                    "type": "string",
+                    "description": "The image tag to pull from."
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSPrometheus": {
+            "properties": {
+                "monitor": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSPrometheusMonitor"
                 },
                 "service": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSService",
-                    "description": "Configure CoreDNS Service parameters."
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSPrometheusService"
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSPrometheusMonitor": {
+            "properties": {
+                "additionalLabels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Additional labels that can be used so ServiceMonitor will be discovered by Prometheus."
                 },
-                "serviceAccount": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSServiceAccount",
-                    "description": "Configure CoreDNS Service Account."
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Set this to true to create ServiceMonitor for Prometheus operator."
                 },
-                "serviceType": {
-                    "description": "Kubernetes Service type.",
+                "namespace": {
+                    "type": "string",
+                    "description": "Selector to select which namespaces the Endpoints objects are discovered from."
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSPrometheusService": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations to add to the metrics Service."
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Set this to true to create Service for Prometheus metrics."
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSRBAC": {
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "If true, create \u0026 use RBAC resources"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template."
+                },
+                "pspEnable": {
+                    "type": "boolean",
+                    "description": "If true, create and use PodSecurityPolicy"
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSServer": {
+            "properties": {
+                "plugins": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSServerPlugin"
+                    },
+                    "description": "the plugins to use for this server block."
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "optional, defaults to \"\" (which equals 53 in CoreDNS)."
+                },
+                "zones": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSServerZone"
+                    },
+                    "description": "the `zones` block can be left out entirely, defaults to \".\""
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSServerPlugin": {
+            "properties": {
+                "configBlock": {
+                    "type": "string",
+                    "description": "if the plugin supports extra block style config, supply it here"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "name of plugin, if used multiple times ensure that the plugin supports it!"
+                },
+                "parameters": {
+                    "type": "string",
+                    "description": "list of parameters after the plugin"
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSServerZone": {
+            "properties": {
+                "scheme": {
+                    "type": "string",
+                    "description": "optional, defaults to \"\" (which equals \"dns://\" in CoreDNS)"
+                },
+                "use_tcp": {
+                    "type": "boolean",
+                    "description": "set this parameter to optionally expose the port on tcp as well as udp for the DNS protocol. Note that this will not work if you are also exposing tls or grpc on the same server."
+                },
+                "zone": {
+                    "type": "string",
+                    "description": "optional, defaults to \".\""
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSService": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations to add to service."
+                },
+                "clusterIP": {
+                    "type": "string",
+                    "description": "IP address to assign to service."
+                },
+                "externalIPs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "External IP addresses."
+                },
+                "externalTrafficPolicy": {
+                    "type": "string",
+                    "description": "Enable client source IP preservation."
+                },
+                "loadBalancerIP": {
+                    "type": "string",
+                    "description": "IP address to assign to load balancer (if supported)."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the Service. If not set, a name is generated using the fullname template."
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSServiceAccount": {
+            "properties": {
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "create": {
+                    "type": "boolean",
+                    "description": "If true, create \u0026 use serviceAccount."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template"
+                }
+            },
+            "type": "object"
+        },
+        "kubernetes-coredns:index:CoreDNSZoneFile": {
+            "properties": {
+                "contents": {
                     "type": "string"
                 },
-                "terminationGracePeriodSeconds": {
-                    "description": "Optional duration in seconds the pod needs to terminate gracefully.",
-                    "type": "integer"
+                "domain": {
+                    "type": "string"
                 },
-                "tolerations": {
-                    "description": "Tolerations for pod assignment.",
-                    "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Toleration"
-                    },
-                    "type": "array"
-                },
-                "zoneFiles": {
-                    "description": "Configure custom Zone files.",
-                    "items": {
-                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSZoneFile"
-                    },
-                    "type": "array"
+                "string": {
+                    "type": "string"
                 }
             },
-            "properties": {
-                "status": {
-                    "$ref": "#/types/kubernetes-coredns:index:ReleaseStatus",
-                    "description": "Detailed information about the status of the underlying Helm deployment."
-                }
-            },
-            "required": [
-                "status"
-            ]
-        }
-    },
-    "types": {
+            "type": "object"
+        },
         "kubernetes-coredns:index:Release": {
             "description": "A Release is an instance of a chart running in a Kubernetes cluster.\nA Chart is a Helm package. It contains all of the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster.\nNote - Helm Release is currently in BETA and may change. Use in production environment is discouraged.",
             "properties": {
@@ -407,315 +558,167 @@
                     ]
                 }
             }
-        },
-        "kubernetes-coredns:index:CoreDNSAutoscaler": {
+        }
+    },
+    "provider": {},
+    "resources": {
+        "kubernetes-coredns:index:CoreDNS": {
+            "description": "Enable fast and flexible in-cluster DNS.",
             "properties": {
-                "coresPerReplica": {
-                    "description": "Number of cores in the cluster per coredns replica.",
-                    "type": "integer"
+                "status": {
+                    "$ref": "#/types/kubernetes-coredns:index:ReleaseStatus",
+                    "description": "Detailed information about the status of the underlying Helm deployment."
+                }
+            },
+            "required": [
+                "status"
+            ],
+            "inputProperties": {
+                "affinity": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity",
+                    "description": "Affinity settings for pod assignment\t."
                 },
-                "enabled": {
-                    "description": "Enabled the cluster-proportional-autoscaler.",
-                    "type": "boolean"
+                "autoscaler": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSAutoscaler",
+                    "description": "Configue a cluster-proportional-autoscaler for coredns. See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler."
+                },
+                "autoscaling": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec",
+                    "description": "Create HorizontalPodAutoscaler object."
+                },
+                "deployment": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSDeployment",
+                    "description": "Configure the CoreDNS Deployment."
+                },
+                "extraSecrets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
+                    },
+                    "description": "Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes."
+                },
+                "extraVolumeMounts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
+                    },
+                    "description": "Optional array of mount points for extraVolumes."
+                },
+                "extraVolumes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Volume"
+                    },
+                    "description": "Optional array of extra volumes to create."
+                },
+                "helmOptions": {
+                    "$ref": "#/types/kubernetes-coredns:index:Release",
+                    "description": "HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args."
+                },
+                "hpa": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSHPA",
+                    "description": "Alternative configuration for HPA deployment if wanted."
                 },
                 "image": {
                     "$ref": "#/types/kubernetes-coredns:index:CoreDNSImage",
-                    "description": "The image to pull from for the autoscaler."
+                    "description": "The image to pull."
                 },
-                "includeUnschedulableNodes": {
-                    "description": "Whether to include unschedulable nodes in the nodes/cores calculations - this requires version 1.8.0+ of the autoscaler.",
-                    "type": "boolean"
+                "isClusterService": {
+                    "type": "boolean",
+                    "description": "Specifies whether chart should be deployed as cluster-service or normal k8s app."
                 },
-                "max": {
-                    "description": "Max size of replicaCount",
-                    "type": "integer"
+                "livenessProbe": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe",
+                    "description": "Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config."
                 },
-                "min": {
-                    "description": "Min size of replicaCount",
-                    "type": "integer"
-                },
-                "nodesPerReplica": {
-                    "description": "Number of nodes in the cluster per coredns replica.",
-                    "type": "integer"
-                },
-                "preventSinglePointFailure": {
-                    "description": "If true does not allow single points of failure to form.",
-                    "type": "boolean"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSDeployment": {
-            "properties": {
-                "enabled": {
-                    "description": "Optionally disable the main deployment and its respective resources.",
-                    "type": "boolean"
-                },
-                "name": {
-                    "description": "Name of the deployment if deployment.enabled is true. Otherwise the name of an existing deployment for the autoscaler or HPA to target.",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSHPA": {
-            "properties": {
-                "enabled": {
-                    "type": "boolean"
-                },
-                "maxReplicas": {
-                    "type": "integer"
-                },
-                "metrics": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
-                },
-                "minReplicas": {
-                    "type": "integer"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSImage": {
-            "properties": {
-                "pullPolicy": {
-                    "description": "Image pull policy.",
-                    "type": "string"
-                },
-                "pullSecrets": {
-                    "description": "Specify container image pull secrets.",
-                    "items": {
+                "nodeSelector": {
+                    "type": "object",
+                    "additionalProperties": {
                         "type": "string"
                     },
-                    "type": "array"
+                    "description": "Node labels for pod assignment."
                 },
-                "repository": {
-                    "description": "The image repository to pull from.",
-                    "type": "string"
+                "podAnnotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Optional Pod only Annotations."
                 },
-                "tag": {
-                    "description": "The image tag to pull from.",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSPrometheus": {
-            "properties": {
-                "monitor": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSPrometheusMonitor"
+                "podDisruptionBudget": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec",
+                    "description": "Optional PodDisruptionBudget."
+                },
+                "preStopSleep": {
+                    "type": "integer",
+                    "description": "Under heavy load it takes more that standard time to remove Pod endpoint from a cluster. This will delay termination of our pod by `preStopSleep`. To make sure kube-proxy has enough time to catch up."
+                },
+                "priorityClassName": {
+                    "type": "string",
+                    "description": "Optional priority class to be used for the coredns pods. Used for autoscaler if autoscaler.priorityClassName not set."
+                },
+                "prometheus": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSPrometheus",
+                    "description": "Configure Prometheus installation."
+                },
+                "rbac": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSRBAC",
+                    "description": "Configure CoreDNS RBAC resources."
+                },
+                "readinessProbe": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe",
+                    "description": "Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config."
+                },
+                "replicaCount": {
+                    "type": "integer",
+                    "description": "Number of replicas."
+                },
+                "resources": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:ResourceRequirements",
+                    "description": "Container resource limits."
+                },
+                "rollingUpdate": {
+                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
+                },
+                "servers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSServer"
+                    },
+                    "description": "Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends: https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options"
                 },
                 "service": {
-                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSPrometheusService"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSPrometheusMonitor": {
-            "properties": {
-                "additionalLabels": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Additional labels that can be used so ServiceMonitor will be discovered by Prometheus.",
-                    "type": "object"
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSService",
+                    "description": "Configure CoreDNS Service parameters."
                 },
-                "enabled": {
-                    "description": "Set this to true to create ServiceMonitor for Prometheus operator.",
-                    "type": "boolean"
+                "serviceAccount": {
+                    "$ref": "#/types/kubernetes-coredns:index:CoreDNSServiceAccount",
+                    "description": "Configure CoreDNS Service Account."
                 },
-                "namespace": {
-                    "description": "Selector to select which namespaces the Endpoints objects are discovered from.",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSPrometheusService": {
-            "properties": {
-                "annotations": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Annotations to add to the metrics Service.",
-                    "type": "object"
+                "serviceType": {
+                    "type": "string",
+                    "description": "Kubernetes Service type."
                 },
-                "enabled": {
-                    "description": "Set this to true to create Service for Prometheus metrics.",
-                    "type": "boolean"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSRBAC": {
-            "properties": {
-                "create": {
-                    "description": "If true, create & use RBAC resources",
-                    "type": "boolean"
+                "terminationGracePeriodSeconds": {
+                    "type": "integer",
+                    "description": "Optional duration in seconds the pod needs to terminate gracefully."
                 },
-                "name": {
-                    "description": "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template.",
-                    "type": "string"
-                },
-                "pspEnable": {
-                    "description": "If true, create and use PodSecurityPolicy",
-                    "type": "boolean"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSServer": {
-            "properties": {
-                "plugins": {
-                    "description": "the plugins to use for this server block.",
+                "tolerations": {
+                    "type": "array",
                     "items": {
-                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSServerPlugin"
+                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Toleration"
                     },
-                    "type": "array"
+                    "description": "Tolerations for pod assignment."
                 },
-                "port": {
-                    "description": "optional, defaults to \"\" (which equals 53 in CoreDNS).",
-                    "type": "integer"
-                },
-                "zones": {
-                    "description": "the `zones` block can be left out entirely, defaults to \".\"",
+                "zoneFiles": {
+                    "type": "array",
                     "items": {
-                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSServerZone"
+                        "$ref": "#/types/kubernetes-coredns:index:CoreDNSZoneFile"
                     },
-                    "type": "array"
+                    "description": "Configure custom Zone files."
                 }
             },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSServerPlugin": {
-            "properties": {
-                "configBlock": {
-                    "description": "if the plugin supports extra block style config, supply it here",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "name of plugin, if used multiple times ensure that the plugin supports it!",
-                    "type": "string"
-                },
-                "parameters": {
-                    "description": "list of parameters after the plugin",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSServerZone": {
-            "properties": {
-                "scheme": {
-                    "description": "optional, defaults to \"\" (which equals \"dns://\" in CoreDNS)",
-                    "type": "string"
-                },
-                "use_tcp": {
-                    "description": "set this parameter to optionally expose the port on tcp as well as udp for the DNS protocol. Note that this will not work if you are also exposing tls or grpc on the same server.",
-                    "type": "boolean"
-                },
-                "zone": {
-                    "description": "optional, defaults to \".\"",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSService": {
-            "properties": {
-                "annotations": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "Annotations to add to service.",
-                    "type": "object"
-                },
-                "clusterIP": {
-                    "description": "IP address to assign to service.",
-                    "type": "string"
-                },
-                "externalIPs": {
-                    "description": "External IP addresses.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "externalTrafficPolicy": {
-                    "description": "Enable client source IP preservation.",
-                    "type": "string"
-                },
-                "loadBalancerIP": {
-                    "description": "IP address to assign to load balancer (if supported).",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "The name of the Service. If not set, a name is generated using the fullname template.",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSServiceAccount": {
-            "properties": {
-                "annotations": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "type": "object"
-                },
-                "create": {
-                    "description": "If true, create & use serviceAccount.",
-                    "type": "boolean"
-                },
-                "name": {
-                    "description": "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template",
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "kubernetes-coredns:index:CoreDNSZoneFile": {
-            "properties": {
-                "contents": {
-                    "type": "string"
-                },
-                "domain": {
-                    "type": "string"
-                },
-                "string": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        }
-    },
-    "language": {
-        "csharp": {
-            "namespaces": {
-                "kubernetes-coredns": "KubernetesCoreDNS"
-            },
-            "packageReferences": {
-                "Pulumi": "3.*",
-                "Pulumi.Kubernetes": "3.*"
-            }
-        },
-        "go": {
-            "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-kubernetes-coredns/sdk/go/kubernetes-coredns"
-        },
-        "nodejs": {
-            "dependencies": {
-                "@pulumi/kubernetes": "^3.7.1"
-            },
-            "devDependencies": {
-                "typescript": "^3.7.0"
-            }
-        },
-        "python": {
-            "requires": {
-                "pulumi": ">=3.0.0,<4.0.0",
-                "pulumi-kubernetes": ">=3.7.1,<4.0.0"
-            }
+            "isComponent": true
         }
     }
 }

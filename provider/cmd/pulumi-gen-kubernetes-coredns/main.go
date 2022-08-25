@@ -15,6 +15,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -67,11 +68,16 @@ func emitSDK(language, outdir string) error {
 		generator = func() (map[string][]byte, error) { return pygen.GeneratePackage(tool, pkg, extraFiles) }
 	case "schema":
 		generator = func() (map[string][]byte, error) {
-			bytes, err := json.MarshalIndent(pkg, "", "    ")
+			schemaBytes, err := provider.Schema(semver.MustParse(version.Version))
 			if err != nil {
 				return nil, err
 			}
-			return map[string][]byte{"schema.json": bytes}, nil
+			indented := new(bytes.Buffer)
+			err = json.Indent(indented, []byte(schemaBytes), "", "    ")
+			if err != nil {
+				return nil, err
+			}
+			return map[string][]byte{"schema.json": indented.Bytes()}, nil
 		}
 
 	default:

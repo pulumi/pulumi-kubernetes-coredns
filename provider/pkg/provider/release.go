@@ -203,6 +203,49 @@ const repositoryOptsJSON string = `{
             }
         }`
 
+const releaseStatusJSON = `{
+            "properties": {
+                "appVersion": {
+                    "type": "string",
+                    "description": "The version number of the application being deployed."
+                },
+                "chart": {
+                    "type": "string",
+                    "description": "The name of the chart."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name is the name of the release."
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Namespace is the kubernetes namespace of the release."
+                },
+                "revision": {
+                    "type": "integer",
+                    "description": "Version is an int32 which represents the version of the release."
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Status of the release."
+                },
+                "version": {
+                    "type": "string",
+                    "description": "A SemVer 2 conformant version string of the chart."
+                }
+            },
+            "type": "object",
+            "required": [
+                "name",
+                "revision",
+                "namespace",
+                "chart",
+                "version",
+                "appVersion",
+                "status"
+            ]
+        }`
+
 func specOf(data string) pschema.ComplexTypeSpec {
 	var out pschema.ComplexTypeSpec
 	err := json.Unmarshal([]byte(data), &out)
