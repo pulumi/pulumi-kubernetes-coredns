@@ -1,4 +1,4 @@
-// Copyright 2021, Pulumi Corporation.
+// Copyright 2022, Pulumi Corporation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,8 +33,9 @@ import (
 func New[C infer.ComponentResource[I, O], I helmbase.ChartArgs, O helmbase.Chart]() (p.Provider, *schema.Provider) {
 	var cachedSchema string
 	var schemaMutex sync.Mutex
+	inferredComponent := infer.Component[C, I, O]()
 	schema := schema.Wrap(nil).
-		WithResources(infer.Component[C, I, O]())
+		WithResources(inferredComponent)
 	return &middleware.Scaffold{
 		ConstructFn: func(pctx p.Context, typ string, name string,
 			ctx *pulumi.Context, inputs pp.ConstructInputs, opts pulumi.ResourceOption) (pulumi.ComponentResource, error) {
@@ -55,22 +56,27 @@ func New[C infer.ComponentResource[I, O], I helmbase.ChartArgs, O helmbase.Chart
 				if err != nil {
 					return p.GetSchemaResponse{}, err
 				}
+				pkgName := ctx.RuntimeInformation().PackageName
+				tk, err := inferredComponent.GetToken()
+				token := fmt.Sprintf("%s:index:%s", pkgName, tk.Name().String())
+				if err != nil {
+					return p.GetSchemaResponse{}, err
+				}
 				var spec pschema.PackageSpec
 				err = json.Unmarshal([]byte(s.Schema), &spec)
 				if err != nil {
 					return p.GetSchemaResponse{}, err
 				}
-				pkgName := ctx.RuntimeInformation().PackageName
 
 				// Fix the type ref
-				r := spec.Resources[fmt.Sprintf("%s:index:CoreDNS", pkgName)]
+				r := spec.Resources[token]
 				r.InputProperties["helmOptions"] = pschema.PropertySpec{
 					Description: "HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.",
 					TypeSpec: pschema.TypeSpec{
 						Ref: fmt.Sprintf("#/types/%s:index:Release", pkgName),
 					},
 				}
-				spec.Resources[fmt.Sprintf("%s:index:CoreDNS", pkgName)] = r
+				spec.Resources[token] = r
 				for k, v := range r.InputProperties {
 					var makePlain func(p *pschema.TypeSpec)
 					makePlain = func(p *pschema.TypeSpec) {
