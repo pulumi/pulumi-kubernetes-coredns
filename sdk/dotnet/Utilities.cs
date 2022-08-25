@@ -74,7 +74,7 @@ namespace Pulumi.KubernetesCoreDNS
         }
     }
 
-    internal sealed class KubernetesCoreDNSResourceTypeAttribute : Pulumi.ResourceTypeAttribute
+    internal sealed class KubernetesCoreDNSResourceTypeAttribute : global::Pulumi.ResourceTypeAttribute
     {
         public KubernetesCoreDNSResourceTypeAttribute(string type) : base(type, Utilities.Version)
         {

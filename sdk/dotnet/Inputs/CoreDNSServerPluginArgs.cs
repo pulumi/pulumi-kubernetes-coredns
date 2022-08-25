@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSServerPluginArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSServerPluginArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// if the plugin supports extra block style config, supply it here
@@ -33,5 +33,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSServerPluginArgs()
         {
         }
+        public static new CoreDNSServerPluginArgs Empty => new CoreDNSServerPluginArgs();
     }
 }

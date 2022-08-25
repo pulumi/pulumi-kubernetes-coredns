@@ -13,7 +13,7 @@ namespace Pulumi.KubernetesCoreDNS
     /// Enable fast and flexible in-cluster DNS.
     /// </summary>
     [KubernetesCoreDNSResourceType("kubernetes-coredns:index:CoreDNS")]
-    public partial class CoreDNS : Pulumi.ComponentResource
+    public partial class CoreDNS : global::Pulumi.ComponentResource
     {
         /// <summary>
         /// Detailed information about the status of the underlying Helm deployment.
@@ -47,7 +47,7 @@ namespace Pulumi.KubernetesCoreDNS
         }
     }
 
-    public sealed class CoreDNSArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Affinity settings for pod assignment	.
@@ -277,5 +277,6 @@ namespace Pulumi.KubernetesCoreDNS
         public CoreDNSArgs()
         {
         }
+        public static new CoreDNSArgs Empty => new CoreDNSArgs();
     }
 }

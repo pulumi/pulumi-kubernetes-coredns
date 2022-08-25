@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSImageArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSImageArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Image pull policy.
@@ -45,5 +45,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSImageArgs()
         {
         }
+        public static new CoreDNSImageArgs Empty => new CoreDNSImageArgs();
     }
 }

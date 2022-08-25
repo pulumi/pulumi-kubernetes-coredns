@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSZoneFileArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSZoneFileArgs : global::Pulumi.ResourceArgs
     {
         [Input("contents")]
         public Input<string>? Contents { get; set; }
@@ -24,5 +24,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSZoneFileArgs()
         {
         }
+        public static new CoreDNSZoneFileArgs Empty => new CoreDNSZoneFileArgs();
     }
 }

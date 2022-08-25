@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSHPAArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSHPAArgs : global::Pulumi.ResourceArgs
     {
         [Input("enabled")]
         public Input<bool>? Enabled { get; set; }
@@ -27,5 +27,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSHPAArgs()
         {
         }
+        public static new CoreDNSHPAArgs Empty => new CoreDNSHPAArgs();
     }
 }

@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSPrometheusServiceArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSPrometheusServiceArgs : global::Pulumi.ResourceArgs
     {
         [Input("annotations")]
         private InputMap<string>? _annotations;
@@ -33,5 +33,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSPrometheusServiceArgs()
         {
         }
+        public static new CoreDNSPrometheusServiceArgs Empty => new CoreDNSPrometheusServiceArgs();
     }
 }

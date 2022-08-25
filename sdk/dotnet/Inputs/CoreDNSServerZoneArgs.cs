@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSServerZoneArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSServerZoneArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// optional, defaults to "" (which equals "dns://" in CoreDNS)
@@ -33,5 +33,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSServerZoneArgs()
         {
         }
+        public static new CoreDNSServerZoneArgs Empty => new CoreDNSServerZoneArgs();
     }
 }

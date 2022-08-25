@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSAutoscalerArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSAutoscalerArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Number of cores in the cluster per coredns replica.
@@ -63,5 +63,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSAutoscalerArgs()
         {
         }
+        public static new CoreDNSAutoscalerArgs Empty => new CoreDNSAutoscalerArgs();
     }
 }

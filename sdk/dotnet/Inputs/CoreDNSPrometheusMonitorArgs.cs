@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSPrometheusMonitorArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSPrometheusMonitorArgs : global::Pulumi.ResourceArgs
     {
         [Input("additionalLabels")]
         private InputMap<string>? _additionalLabels;
@@ -39,5 +39,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSPrometheusMonitorArgs()
         {
         }
+        public static new CoreDNSPrometheusMonitorArgs Empty => new CoreDNSPrometheusMonitorArgs();
     }
 }

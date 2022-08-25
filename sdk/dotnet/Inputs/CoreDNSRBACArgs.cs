@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.KubernetesCoreDNS.Inputs
 {
 
-    public sealed class CoreDNSRBACArgs : Pulumi.ResourceArgs
+    public sealed class CoreDNSRBACArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// If true, create &amp; use RBAC resources
@@ -33,5 +33,6 @@ namespace Pulumi.KubernetesCoreDNS.Inputs
         public CoreDNSRBACArgs()
         {
         }
+        public static new CoreDNSRBACArgs Empty => new CoreDNSRBACArgs();
     }
 }
