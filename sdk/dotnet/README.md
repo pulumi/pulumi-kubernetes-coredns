@@ -1,0 +1,1 @@
+Strongly-typed CoreDNS installation

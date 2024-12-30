@@ -1,6 +1,8 @@
 {
     "name": "kubernetes-coredns",
     "displayName": "Kubernetes CoreDNS",
+    "description": "Strongly-typed CoreDNS installation",
+    "repository": "https://github.com/pulumi/pulumi-kubernetes-coredns",
     "keywords": [
         "pulumi",
         "kubernetes",
@@ -9,21 +11,23 @@
         "category/infrastructure"
     ],
     "publisher": "Pulumi",
+    "homepage": "https://pulumi.io",
+    "license": "Apache-2.0",
     "resources": {
         "kubernetes-coredns:index:CoreDNS": {
             "description": "Enable fast and flexible in-cluster DNS.",
             "isComponent": true,
             "inputProperties": {
                 "affinity": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity",
-                    "description": "Affinity settings for pod assignment\t."
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Affinity",
+                    "description": "Affinity settings for pod assignment."
                 },
                 "autoscaler": {
                     "$ref": "#/types/kubernetes-coredns:index:CoreDNSAutoscaler",
                     "description": "Configue a cluster-proportional-autoscaler for coredns. See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler."
                 },
                 "autoscaling": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec",
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec",
                     "description": "Create HorizontalPodAutoscaler object."
                 },
                 "deployment": {
@@ -33,21 +37,21 @@
                 "extraSecrets": {
                     "description": "Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.",
                     "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
+                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:VolumeMount"
                     },
                     "type": "array"
                 },
                 "extraVolumeMounts": {
                     "description": "Optional array of mount points for extraVolumes.",
                     "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"
+                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:VolumeMount"
                     },
                     "type": "array"
                 },
                 "extraVolumes": {
                     "description": "Optional array of extra volumes to create.",
                     "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Volume"
+                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Volume"
                     },
                     "type": "array"
                 },
@@ -68,7 +72,7 @@
                     "type": "boolean"
                 },
                 "livenessProbe": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe",
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Probe",
                     "description": "Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config."
                 },
                 "nodeSelector": {
@@ -86,7 +90,7 @@
                     "type": "object"
                 },
                 "podDisruptionBudget": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec",
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec",
                     "description": "Optional PodDisruptionBudget."
                 },
                 "preStopSleep": {
@@ -106,7 +110,7 @@
                     "description": "Configure CoreDNS RBAC resources."
                 },
                 "readinessProbe": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe",
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Probe",
                     "description": "Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config."
                 },
                 "replicaCount": {
@@ -114,11 +118,11 @@
                     "type": "integer"
                 },
                 "resources": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:ResourceRequirements",
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:ResourceRequirements",
                     "description": "Container resource limits."
                 },
                 "rollingUpdate": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
                 },
                 "servers": {
                     "description": "Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends: https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options",
@@ -146,7 +150,7 @@
                 "tolerations": {
                     "description": "Tolerations for pod assignment.",
                     "items": {
-                        "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Toleration"
+                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Toleration"
                     },
                     "type": "array"
                 },
@@ -467,7 +471,7 @@
                     "type": "integer"
                 },
                 "metrics": {
-                    "$ref": "/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
+                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
                 },
                 "minReplicas": {
                     "type": "integer"
@@ -696,26 +700,47 @@
             },
             "packageReferences": {
                 "Pulumi": "3.*",
-                "Pulumi.Kubernetes": "3.*"
-            }
+                "Pulumi.Kubernetes": "4.*"
+            },
+            "respectSchemaVersion": true
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-kubernetes-coredns/sdk/go/kubernetes-coredns"
+            "importBasePath": "github.com/pulumi/pulumi-kubernetes-coredns/sdk/go/kubernetes-coredns",
+            "generateExtraInputTypes": true,
+            "respectSchemaVersion": true
+        },
+        "java": {
+            "basePackage": "",
+            "buildFiles": "gradle",
+            "dependencies": {
+                "com.google.code.findbugs:jsr305": "3.0.2",
+                "com.google.code.gson:gson": "2.8.9",
+                "com.pulumi:pulumi": "0.20.0",
+                "com.pulumi:kubernetes": "4.19.0"
+            },
+            "gradleNexusPublishPluginVersion": "1.1.0",
+            "gradleTest": ""
         },
         "nodejs": {
             "dependencies": {
-                "@pulumi/kubernetes": "^3.7.1"
+                "@pulumi/pulumi": "^3.0.0",
+                "@pulumi/kubernetes": "^4.0.0"
             },
             "devDependencies": {
-                "typescript": "^3.7.0"
-            }
+                "typescript": "^4.3.5"
+            },
+            "respectSchemaVersion": true
         },
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
-                "pulumi-kubernetes": ">=3.7.1,<4.0.0"
-            }
+                "pulumi-kubernetes": ">=4.19.0,<5.0.0"
+            },
+            "pyproject": {
+                "enabled": true
+            },
+            "respectSchemaVersion": true
         }
     }
 }
