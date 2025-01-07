@@ -17,8 +17,8 @@ package main
 import (
 	_ "embed"
 
-	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/provider"
-	"github.com/pulumi/pulumi-kubernetes-coredns/pkg/version"
+	"github.com/pulumi/pulumi-kubernetes-coredns/provider/pkg/provider"
+	"github.com/pulumi/pulumi-kubernetes-coredns/provider/pkg/version"
 )
 
 //go:embed schema.json

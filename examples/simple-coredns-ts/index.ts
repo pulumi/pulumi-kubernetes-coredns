@@ -31,4 +31,5 @@ const dns = new coredns.CoreDNS("dns", {
     },
 });
 
+export const namespace = ns.metadata.name;
 export const corednsStatus = dns.status;
