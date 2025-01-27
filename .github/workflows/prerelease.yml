@@ -491,6 +491,9 @@ jobs:
       with:
         args: -p 3 -f .goreleaser.prerelease.yml --clean --skip=validate --timeout 60m0s
         version: latest
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+      if: ${{ failure() }}
     - if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
