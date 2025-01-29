@@ -19,7 +19,7 @@
             "isComponent": true,
             "inputProperties": {
                 "affinity": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Affinity",
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:Affinity",
                     "description": "Affinity settings for pod assignment."
                 },
                 "autoscaler": {
@@ -27,7 +27,7 @@
                     "description": "Configue a cluster-proportional-autoscaler for coredns. See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler."
                 },
                 "autoscaling": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec",
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec",
                     "description": "Create HorizontalPodAutoscaler object."
                 },
                 "deployment": {
@@ -37,21 +37,21 @@
                 "extraSecrets": {
                     "description": "Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.",
                     "items": {
-                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:VolumeMount"
+                        "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:VolumeMount"
                     },
                     "type": "array"
                 },
                 "extraVolumeMounts": {
                     "description": "Optional array of mount points for extraVolumes.",
                     "items": {
-                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:VolumeMount"
+                        "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:VolumeMount"
                     },
                     "type": "array"
                 },
                 "extraVolumes": {
                     "description": "Optional array of extra volumes to create.",
                     "items": {
-                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Volume"
+                        "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:Volume"
                     },
                     "type": "array"
                 },
@@ -72,7 +72,7 @@
                     "type": "boolean"
                 },
                 "livenessProbe": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Probe",
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:Probe",
                     "description": "Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config."
                 },
                 "nodeSelector": {
@@ -90,7 +90,7 @@
                     "type": "object"
                 },
                 "podDisruptionBudget": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec",
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec",
                     "description": "Optional PodDisruptionBudget."
                 },
                 "preStopSleep": {
@@ -110,7 +110,7 @@
                     "description": "Configure CoreDNS RBAC resources."
                 },
                 "readinessProbe": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Probe",
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:Probe",
                     "description": "Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config."
                 },
                 "replicaCount": {
@@ -118,11 +118,11 @@
                     "type": "integer"
                 },
                 "resources": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:ResourceRequirements",
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:ResourceRequirements",
                     "description": "Container resource limits."
                 },
                 "rollingUpdate": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"
                 },
                 "servers": {
                     "description": "Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends: https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options",
@@ -150,7 +150,7 @@
                 "tolerations": {
                     "description": "Tolerations for pod assignment.",
                     "items": {
-                        "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:core/v1:Toleration"
+                        "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:core/v1:Toleration"
                     },
                     "type": "array"
                 },
@@ -471,7 +471,7 @@
                     "type": "integer"
                 },
                 "metrics": {
-                    "$ref": "/kubernetes/v4.19.0/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
+                    "$ref": "/kubernetes/v4.21.0/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"
                 },
                 "minReplicas": {
                     "type": "integer"
@@ -716,10 +716,10 @@
             "dependencies": {
                 "com.google.code.findbugs:jsr305": "3.0.2",
                 "com.google.code.gson:gson": "2.8.9",
-                "com.pulumi:pulumi": "0.20.0",
-                "com.pulumi:kubernetes": "4.19.0"
+                "com.pulumi:pulumi": "1.0.0",
+                "com.pulumi:kubernetes": "4.21.0"
             },
-            "gradleNexusPublishPluginVersion": "1.1.0",
+            "gradleNexusPublishPluginVersion": "2.0.0",
             "gradleTest": ""
         },
         "nodejs": {
