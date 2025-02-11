@@ -118,7 +118,7 @@ type CoreDNSArgs struct {
 	// Optional array of extra volumes to create.
 	ExtraVolumes corev1.VolumeArrayInput
 	// HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
-	HelmOptions ReleasePtrInput
+	HelmOptions *ReleaseArgs
 	// Alternative configuration for HPA deployment if wanted.
 	Hpa CoreDNSHPAPtrInput
 	// The image to pull.
