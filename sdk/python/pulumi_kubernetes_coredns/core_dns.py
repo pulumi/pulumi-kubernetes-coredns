@@ -29,7 +29,7 @@ class CoreDNSArgs:
                  extra_secrets: Optional[pulumi.Input[Sequence[pulumi.Input['pulumi_kubernetes.core.v1.VolumeMountArgs']]]] = None,
                  extra_volume_mounts: Optional[pulumi.Input[Sequence[pulumi.Input['pulumi_kubernetes.core.v1.VolumeMountArgs']]]] = None,
                  extra_volumes: Optional[pulumi.Input[Sequence[pulumi.Input['pulumi_kubernetes.core.v1.VolumeArgs']]]] = None,
-                 helm_options: Optional[pulumi.Input['ReleaseArgs']] = None,
+                 helm_options: Optional['ReleaseArgs'] = None,
                  hpa: Optional[pulumi.Input['CoreDNSHPAArgs']] = None,
                  image: Optional[pulumi.Input['CoreDNSImageArgs']] = None,
                  is_cluster_service: Optional[pulumi.Input[bool]] = None,
@@ -61,7 +61,7 @@ class CoreDNSArgs:
         :param pulumi.Input[Sequence[pulumi.Input['pulumi_kubernetes.core.v1.VolumeMountArgs']]] extra_secrets: Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.
         :param pulumi.Input[Sequence[pulumi.Input['pulumi_kubernetes.core.v1.VolumeMountArgs']]] extra_volume_mounts: Optional array of mount points for extraVolumes.
         :param pulumi.Input[Sequence[pulumi.Input['pulumi_kubernetes.core.v1.VolumeArgs']]] extra_volumes: Optional array of extra volumes to create.
-        :param pulumi.Input['ReleaseArgs'] helm_options: HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
+        :param 'ReleaseArgs' helm_options: HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
         :param pulumi.Input['CoreDNSHPAArgs'] hpa: Alternative configuration for HPA deployment if wanted.
         :param pulumi.Input['CoreDNSImageArgs'] image: The image to pull.
         :param pulumi.Input[bool] is_cluster_service: Specifies whether chart should be deployed as cluster-service or normal k8s app.
@@ -231,14 +231,14 @@ class CoreDNSArgs:
 
     @property
     @pulumi.getter(name="helmOptions")
-    def helm_options(self) -> Optional[pulumi.Input['ReleaseArgs']]:
+    def helm_options(self) -> Optional['ReleaseArgs']:
         """
         HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
         """
         return pulumi.get(self, "helm_options")
 
     @helm_options.setter
-    def helm_options(self, value: Optional[pulumi.Input['ReleaseArgs']]):
+    def helm_options(self, value: Optional['ReleaseArgs']):
         pulumi.set(self, "helm_options", value)
 
     @property
@@ -515,7 +515,7 @@ class CoreDNS(pulumi.ComponentResource):
                  extra_secrets: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeMountArgs']]]]] = None,
                  extra_volume_mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeMountArgs']]]]] = None,
                  extra_volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeArgs']]]]] = None,
-                 helm_options: Optional[pulumi.Input[Union['ReleaseArgs', 'ReleaseArgsDict']]] = None,
+                 helm_options: Optional[Union['ReleaseArgs', 'ReleaseArgsDict']] = None,
                  hpa: Optional[pulumi.Input[Union['CoreDNSHPAArgs', 'CoreDNSHPAArgsDict']]] = None,
                  image: Optional[pulumi.Input[Union['CoreDNSImageArgs', 'CoreDNSImageArgsDict']]] = None,
                  is_cluster_service: Optional[pulumi.Input[bool]] = None,
@@ -551,7 +551,7 @@ class CoreDNS(pulumi.ComponentResource):
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeMountArgs']]]] extra_secrets: Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeMountArgs']]]] extra_volume_mounts: Optional array of mount points for extraVolumes.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeArgs']]]] extra_volumes: Optional array of extra volumes to create.
-        :param pulumi.Input[Union['ReleaseArgs', 'ReleaseArgsDict']] helm_options: HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
+        :param Union['ReleaseArgs', 'ReleaseArgsDict'] helm_options: HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
         :param pulumi.Input[Union['CoreDNSHPAArgs', 'CoreDNSHPAArgsDict']] hpa: Alternative configuration for HPA deployment if wanted.
         :param pulumi.Input[Union['CoreDNSImageArgs', 'CoreDNSImageArgsDict']] image: The image to pull.
         :param pulumi.Input[bool] is_cluster_service: Specifies whether chart should be deployed as cluster-service or normal k8s app.
@@ -605,7 +605,7 @@ class CoreDNS(pulumi.ComponentResource):
                  extra_secrets: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeMountArgs']]]]] = None,
                  extra_volume_mounts: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeMountArgs']]]]] = None,
                  extra_volumes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['pulumi_kubernetes.core.v1.VolumeArgs']]]]] = None,
-                 helm_options: Optional[pulumi.Input[Union['ReleaseArgs', 'ReleaseArgsDict']]] = None,
+                 helm_options: Optional[Union['ReleaseArgs', 'ReleaseArgsDict']] = None,
                  hpa: Optional[pulumi.Input[Union['CoreDNSHPAArgs', 'CoreDNSHPAArgsDict']]] = None,
                  image: Optional[pulumi.Input[Union['CoreDNSImageArgs', 'CoreDNSImageArgsDict']]] = None,
                  is_cluster_service: Optional[pulumi.Input[bool]] = None,
