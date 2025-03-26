@@ -16,6 +16,7 @@ package provider
 
 import (
 	helmbase "github.com/pulumi/pulumi-go-helmbase"
+	coredns "github.com/pulumi/pulumi-kubernetes-coredns/sdk/go/kubernetes-coredns"
 	appsv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/apps/v1"
 	autoscaling "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/autoscaling/v2beta2"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -38,7 +39,7 @@ func (c *CoreDNS) DefaultRepoURL() string                    { return "https://c
 // CoreDNSArgs contains the set of arguments for creating a CoreDNS component resource.
 type CoreDNSArgs struct {
 	// The image to pull.
-	CoreDNSImage *CoreDNSImage `pulumi:"image"`
+	CoreDNSImage coredns.CoreDNSImagePtrInput `pulumi:"image"`
 	// Number of replicas.
 	ReplicaCount *int `pulumi:"replicaCount"`
 	// Container resource limits.
@@ -57,20 +58,20 @@ type CoreDNSArgs struct {
 	// Kubernetes Service type.
 	ServiceType *string `pulumi:"serviceType"`
 	// Configure Prometheus installation.
-	Prometheus *CoreDNSPrometheus `pulumi:"prometheus"`
+	Prometheus coredns.CoreDNSPrometheusPtrInput `pulumi:"prometheus"`
 	// Configure CoreDNS Service parameters.
-	Service *CoreDNSService `pulumi:"service"`
+	Service coredns.CoreDNSServicePtrInput `pulumi:"service"`
 	// Configure CoreDNS Service Account.
-	ServiceAccount *CoreDNSServiceAccount `pulumi:"serviceAccount"`
+	ServiceAccount coredns.CoreDNSServiceAccountPtrInput `pulumi:"serviceAccount"`
 	// Configure CoreDNS RBAC resources.
-	RBAC *CoreDNSRBAC `pulumi:"rbac"`
+	RBAC coredns.CoreDNSRBACPtrInput `pulumi:"rbac"`
 	// Specifies whether chart should be deployed as cluster-service or normal k8s app.
 	IsClusterService *bool `pulumi:"isClusterService"`
 	// Optional priority class to be used for the coredns pods. Used for autoscaler if autoscaler.priorityClassName not set.
 	PriorityClassName *string `pulumi:"priorityClassName"`
 	// Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends:
 	// https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
-	CoreDNSServers *[]CoreDNSServer `pulumi:"servers"`
+	CoreDNSServers coredns.CoreDNSServerArrayInput `pulumi:"servers"`
 	// Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config.
 	LivenessProbe *corev1.Probe `pulumi:"livenessProbe" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"`
 	// Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config.
@@ -99,9 +100,9 @@ type CoreDNSArgs struct {
 	HPA *CoreDNSHPA `pulumi:"hpa"`
 	// Configue a cluster-proportional-autoscaler for coredns.
 	// See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler.
-	Autoscaler *CoreDNSAutoscaler `pulumi:"autoscaler"`
+	Autoscaler coredns.CoreDNSAutoscalerPtrInput `pulumi:"autoscaler"`
 	// Configure the CoreDNS Deployment.
-	Deployment *CoreDNSDeployment `pulumi:"deployment"`
+	Deployment coredns.CoreDNSDeploymentPtrInput `pulumi:"deployment"`
 
 	// HelmOptions is an escape hatch that lets the end user control any aspect of the
 	// Helm deployment. This exposes the entirety of the underlying Helm Release component args.
