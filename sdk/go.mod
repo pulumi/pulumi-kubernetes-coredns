@@ -1,12 +1,13 @@
 module github.com/pulumi/pulumi-kubernetes-coredns/sdk
 
-go 1.22.4
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.22.1
-	github.com/pulumi/pulumi/sdk/v3 v3.156.0
+	github.com/pulumi/pulumi/sdk/v3 v3.158.0
 )
 
 require (
