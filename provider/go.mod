@@ -1,14 +1,14 @@
 module github.com/pulumi/pulumi-kubernetes-coredns/provider
 
-go 1.23.0
+go 1.23.11
 
-toolchain go1.23.7
+toolchain go1.24.5
 
 require (
 	github.com/pulumi/pulumi-go-helmbase v0.2.0
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.23.0
-	github.com/pulumi/pulumi/pkg/v3 v3.185.0
-	github.com/pulumi/pulumi/sdk/v3 v3.185.0
+	github.com/pulumi/pulumi/pkg/v3 v3.187.0
+	github.com/pulumi/pulumi/sdk/v3 v3.187.0
 )
 
 require (
