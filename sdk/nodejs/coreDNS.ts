@@ -29,7 +29,7 @@ export class CoreDNS extends pulumi.ComponentResource {
     /**
      * Detailed information about the status of the underlying Helm deployment.
      */
-    public /*out*/ readonly status!: pulumi.Output<outputs.ReleaseStatus>;
+    declare public /*out*/ readonly status: pulumi.Output<outputs.ReleaseStatus>;
 
     /**
      * Create a CoreDNS resource with the given unique name, arguments, and options.
@@ -42,36 +42,36 @@ export class CoreDNS extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["affinity"] = args ? args.affinity : undefined;
-            resourceInputs["autoscaler"] = args ? args.autoscaler : undefined;
-            resourceInputs["autoscaling"] = args ? args.autoscaling : undefined;
-            resourceInputs["deployment"] = args ? args.deployment : undefined;
-            resourceInputs["extraSecrets"] = args ? args.extraSecrets : undefined;
-            resourceInputs["extraVolumeMounts"] = args ? args.extraVolumeMounts : undefined;
-            resourceInputs["extraVolumes"] = args ? args.extraVolumes : undefined;
-            resourceInputs["helmOptions"] = args ? args.helmOptions : undefined;
-            resourceInputs["hpa"] = args ? args.hpa : undefined;
-            resourceInputs["image"] = args ? args.image : undefined;
-            resourceInputs["isClusterService"] = args ? args.isClusterService : undefined;
-            resourceInputs["livenessProbe"] = args ? args.livenessProbe : undefined;
-            resourceInputs["nodeSelector"] = args ? args.nodeSelector : undefined;
-            resourceInputs["podAnnotations"] = args ? args.podAnnotations : undefined;
-            resourceInputs["podDisruptionBudget"] = args ? args.podDisruptionBudget : undefined;
-            resourceInputs["preStopSleep"] = args ? args.preStopSleep : undefined;
-            resourceInputs["priorityClassName"] = args ? args.priorityClassName : undefined;
-            resourceInputs["prometheus"] = args ? args.prometheus : undefined;
-            resourceInputs["rbac"] = args ? args.rbac : undefined;
-            resourceInputs["readinessProbe"] = args ? args.readinessProbe : undefined;
-            resourceInputs["replicaCount"] = args ? args.replicaCount : undefined;
-            resourceInputs["resources"] = args ? args.resources : undefined;
-            resourceInputs["rollingUpdate"] = args ? args.rollingUpdate : undefined;
-            resourceInputs["servers"] = args ? args.servers : undefined;
-            resourceInputs["service"] = args ? args.service : undefined;
-            resourceInputs["serviceAccount"] = args ? args.serviceAccount : undefined;
-            resourceInputs["serviceType"] = args ? args.serviceType : undefined;
-            resourceInputs["terminationGracePeriodSeconds"] = args ? args.terminationGracePeriodSeconds : undefined;
-            resourceInputs["tolerations"] = args ? args.tolerations : undefined;
-            resourceInputs["zoneFiles"] = args ? args.zoneFiles : undefined;
+            resourceInputs["affinity"] = args?.affinity;
+            resourceInputs["autoscaler"] = args?.autoscaler;
+            resourceInputs["autoscaling"] = args?.autoscaling;
+            resourceInputs["deployment"] = args?.deployment;
+            resourceInputs["extraSecrets"] = args?.extraSecrets;
+            resourceInputs["extraVolumeMounts"] = args?.extraVolumeMounts;
+            resourceInputs["extraVolumes"] = args?.extraVolumes;
+            resourceInputs["helmOptions"] = args?.helmOptions;
+            resourceInputs["hpa"] = args?.hpa;
+            resourceInputs["image"] = args?.image;
+            resourceInputs["isClusterService"] = args?.isClusterService;
+            resourceInputs["livenessProbe"] = args?.livenessProbe;
+            resourceInputs["nodeSelector"] = args?.nodeSelector;
+            resourceInputs["podAnnotations"] = args?.podAnnotations;
+            resourceInputs["podDisruptionBudget"] = args?.podDisruptionBudget;
+            resourceInputs["preStopSleep"] = args?.preStopSleep;
+            resourceInputs["priorityClassName"] = args?.priorityClassName;
+            resourceInputs["prometheus"] = args?.prometheus;
+            resourceInputs["rbac"] = args?.rbac;
+            resourceInputs["readinessProbe"] = args?.readinessProbe;
+            resourceInputs["replicaCount"] = args?.replicaCount;
+            resourceInputs["resources"] = args?.resources;
+            resourceInputs["rollingUpdate"] = args?.rollingUpdate;
+            resourceInputs["servers"] = args?.servers;
+            resourceInputs["service"] = args?.service;
+            resourceInputs["serviceAccount"] = args?.serviceAccount;
+            resourceInputs["serviceType"] = args?.serviceType;
+            resourceInputs["terminationGracePeriodSeconds"] = args?.terminationGracePeriodSeconds;
+            resourceInputs["tolerations"] = args?.tolerations;
+            resourceInputs["zoneFiles"] = args?.zoneFiles;
             resourceInputs["status"] = undefined /*out*/;
         } else {
             resourceInputs["status"] = undefined /*out*/;
