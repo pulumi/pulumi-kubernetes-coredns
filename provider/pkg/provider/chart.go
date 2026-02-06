@@ -42,10 +42,13 @@ type CoreDNSArgs struct {
 	// Number of replicas.
 	ReplicaCount *int `pulumi:"replicaCount"`
 	// Container resource limits.
+	//nolint:lll
 	Resources *corev1.ResourceRequirements `pulumi:"resources" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:ResourceRequirements"`
 	// Create HorizontalPodAutoscaler object.
-	Autoscaling   *autoscaling.HorizontalPodAutoscalerSpec `pulumi:"autoscaling" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec"`
-	RollingUpdate *appsv1.RollingUpdateDeployment          `pulumi:"rollingUpdate" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"`
+	//nolint:lll
+	Autoscaling *autoscaling.HorizontalPodAutoscalerSpec `pulumi:"autoscaling" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:HorizontalPodAutoscalerSpec"`
+	//nolint:lll
+	RollingUpdate *appsv1.RollingUpdateDeployment `pulumi:"rollingUpdate" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:apps/v1:RollingUpdateDeployment"`
 	// Under heavy load it takes more that standard time to remove Pod endpoint from a cluster.
 	// This will delay termination of our pod by `preStopSleep`. To make sure kube-proxy has
 	// enough time to catch up.
@@ -66,38 +69,49 @@ type CoreDNSArgs struct {
 	RBAC *CoreDNSRBAC `pulumi:"rbac"`
 	// Specifies whether chart should be deployed as cluster-service or normal k8s app.
 	IsClusterService *bool `pulumi:"isClusterService"`
-	// Optional priority class to be used for the coredns pods. Used for autoscaler if autoscaler.priorityClassName not set.
+	// Optional priority class to be used for the coredns pods. Used for autoscaler if autoscaler.priorityClassName not
+	// set.
 	PriorityClassName *string `pulumi:"priorityClassName"`
 	// Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends:
 	// https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
 	CoreDNSServers *[]CoreDNSServer `pulumi:"servers"`
-	// Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config.
+	// Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server
+	// config.
+	//nolint:lll
 	LivenessProbe *corev1.Probe `pulumi:"livenessProbe" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"`
-	// Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config.
+	// Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS'
+	// server config.
+	//nolint:lll
 	ReadinessProbe *corev1.Probe `pulumi:"readinessProbe" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Probe"`
 	// Affinity settings for pod assignment	.
+	//nolint:lll
 	Affinity *corev1.Affinity `pulumi:"affinity" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Affinity"`
 	// Node labels for pod assignment.
 	NodeSelector *map[string]string `pulumi:"nodeSelector"`
 	// Tolerations for pod assignment.
+	//nolint:lll
 	Tolerations *[]corev1.Toleration `pulumi:"tolerations" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Toleration"`
 	// Optional PodDisruptionBudget.
+	//nolint:lll
 	PodDisruptionBudget *policyv1.PodDisruptionBudgetSpec `pulumi:"podDisruptionBudget" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:policy/v1:PodDisruptionBudgetSpec"`
 	// Configure custom Zone files.
 	ZoneFiles *[]CoreDNSZoneFile `pulumi:"zoneFiles"`
 	// Optional array of extra volumes to create.
+	//nolint:lll
 	ExtraVolumes *[]corev1.Volume `pulumi:"extraVolumes" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:Volume"`
 	// Optional array of mount points for extraVolumes.
+	//nolint:lll
 	ExtraVolumeMounts *[]corev1.VolumeMount `pulumi:"extraVolumeMounts" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"`
 	// Optional array of secrets to mount inside coredns container.
 	// Possible usecase: need for secure connection with etcd backend.
 	// Optional array of mount points for extraVolumes.
+	//nolint:lll
 	ExtraSecrets *[]corev1.VolumeMount `pulumi:"extraSecrets" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:core/v1:VolumeMount"`
 	// Custom labels to apply to Deployment, Pod, Configmap, Service, ServiceMonitor. Including autoscaler if enabled.
 	CustomLabels *map[string]string
 	// Alternative configuration for HPA deployment if wanted.
 	HPA *CoreDNSHPA `pulumi:"hpa"`
-	// Configue a cluster-proportional-autoscaler for coredns.
+	// Configure a cluster-proportional-autoscaler for coredns.
 	// See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler.
 	Autoscaler *CoreDNSAutoscaler `pulumi:"autoscaler"`
 	// Configure the CoreDNS Deployment.
@@ -192,7 +206,7 @@ type CoreDNSServerZone struct {
 	Scheme *string `pulumi:"scheme"`
 	// set this parameter to optionally expose the port on tcp as well as udp for the DNS protocol.
 	// Note that this will not work if you are also exposing tls or grpc on the same server.
-	UseTcp *bool `pulumi:"use_tcp"`
+	UseTCP *bool `pulumi:"use_tcp"`
 }
 
 type CoreDNSServerPlugin struct {
@@ -211,10 +225,11 @@ type CoreDNSZoneFile struct {
 }
 
 type CoreDNSHPA struct {
-	Enabled     *bool                   `pulumi:"enabled"`
-	MinReplicas *int                    `pulumi:"minReplicas"`
-	MaxReplicas *int                    `pulumi:"maxReplicas"`
-	Metrics     *autoscaling.MetricSpec `pulumi:"metrics" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"`
+	Enabled     *bool `pulumi:"enabled"`
+	MinReplicas *int  `pulumi:"minReplicas"`
+	MaxReplicas *int  `pulumi:"maxReplicas"`
+	//nolint:lll
+	Metrics *autoscaling.MetricSpec `pulumi:"metrics" pschema:"ref=/kubernetes/v3.8.1/schema.json#/types/kubernetes:autoscaling/v2beta2:MetricSpec"`
 }
 
 type CoreDNSAutoscaler struct {
@@ -228,7 +243,8 @@ type CoreDNSAutoscaler struct {
 	Min *int `pulumi:"min"`
 	// Max size of replicaCount
 	Max *int `pulumi:"max"`
-	// Whether to include unschedulable nodes in the nodes/cores calculations - this requires version 1.8.0+ of the autoscaler.
+	// Whether to include unschedulable nodes in the nodes/cores calculations - this requires version 1.8.0+ of the
+	// autoscaler.
 	IncludeUnschedulableNodes *bool `pulumi:"includeUnschedulableNodes"`
 	// If true does not allow single points of failure to form.
 	PreventSinglePointFailure *bool `pulumi:"preventSinglePointFailure"`
