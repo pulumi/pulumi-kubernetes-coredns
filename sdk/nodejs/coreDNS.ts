@@ -29,7 +29,7 @@ export class CoreDNS extends pulumi.ComponentResource {
     /**
      * Detailed information about the status of the underlying Helm deployment.
      */
-    public /*out*/ readonly status!: pulumi.Output<outputs.ReleaseStatus>;
+    declare public /*out*/ readonly status: pulumi.Output<outputs.ReleaseStatus>;
 
     /**
      * Create a CoreDNS resource with the given unique name, arguments, and options.
@@ -42,36 +42,36 @@ export class CoreDNS extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["affinity"] = args ? args.affinity : undefined;
-            resourceInputs["autoscaler"] = args ? args.autoscaler : undefined;
-            resourceInputs["autoscaling"] = args ? args.autoscaling : undefined;
-            resourceInputs["deployment"] = args ? args.deployment : undefined;
-            resourceInputs["extraSecrets"] = args ? args.extraSecrets : undefined;
-            resourceInputs["extraVolumeMounts"] = args ? args.extraVolumeMounts : undefined;
-            resourceInputs["extraVolumes"] = args ? args.extraVolumes : undefined;
-            resourceInputs["helmOptions"] = args ? args.helmOptions : undefined;
-            resourceInputs["hpa"] = args ? args.hpa : undefined;
-            resourceInputs["image"] = args ? args.image : undefined;
-            resourceInputs["isClusterService"] = args ? args.isClusterService : undefined;
-            resourceInputs["livenessProbe"] = args ? args.livenessProbe : undefined;
-            resourceInputs["nodeSelector"] = args ? args.nodeSelector : undefined;
-            resourceInputs["podAnnotations"] = args ? args.podAnnotations : undefined;
-            resourceInputs["podDisruptionBudget"] = args ? args.podDisruptionBudget : undefined;
-            resourceInputs["preStopSleep"] = args ? args.preStopSleep : undefined;
-            resourceInputs["priorityClassName"] = args ? args.priorityClassName : undefined;
-            resourceInputs["prometheus"] = args ? args.prometheus : undefined;
-            resourceInputs["rbac"] = args ? args.rbac : undefined;
-            resourceInputs["readinessProbe"] = args ? args.readinessProbe : undefined;
-            resourceInputs["replicaCount"] = args ? args.replicaCount : undefined;
-            resourceInputs["resources"] = args ? args.resources : undefined;
-            resourceInputs["rollingUpdate"] = args ? args.rollingUpdate : undefined;
-            resourceInputs["servers"] = args ? args.servers : undefined;
-            resourceInputs["service"] = args ? args.service : undefined;
-            resourceInputs["serviceAccount"] = args ? args.serviceAccount : undefined;
-            resourceInputs["serviceType"] = args ? args.serviceType : undefined;
-            resourceInputs["terminationGracePeriodSeconds"] = args ? args.terminationGracePeriodSeconds : undefined;
-            resourceInputs["tolerations"] = args ? args.tolerations : undefined;
-            resourceInputs["zoneFiles"] = args ? args.zoneFiles : undefined;
+            resourceInputs["affinity"] = args?.affinity;
+            resourceInputs["autoscaler"] = args?.autoscaler;
+            resourceInputs["autoscaling"] = args?.autoscaling;
+            resourceInputs["deployment"] = args?.deployment;
+            resourceInputs["extraSecrets"] = args?.extraSecrets;
+            resourceInputs["extraVolumeMounts"] = args?.extraVolumeMounts;
+            resourceInputs["extraVolumes"] = args?.extraVolumes;
+            resourceInputs["helmOptions"] = args?.helmOptions;
+            resourceInputs["hpa"] = args?.hpa;
+            resourceInputs["image"] = args?.image;
+            resourceInputs["isClusterService"] = args?.isClusterService;
+            resourceInputs["livenessProbe"] = args?.livenessProbe;
+            resourceInputs["nodeSelector"] = args?.nodeSelector;
+            resourceInputs["podAnnotations"] = args?.podAnnotations;
+            resourceInputs["podDisruptionBudget"] = args?.podDisruptionBudget;
+            resourceInputs["preStopSleep"] = args?.preStopSleep;
+            resourceInputs["priorityClassName"] = args?.priorityClassName;
+            resourceInputs["prometheus"] = args?.prometheus;
+            resourceInputs["rbac"] = args?.rbac;
+            resourceInputs["readinessProbe"] = args?.readinessProbe;
+            resourceInputs["replicaCount"] = args?.replicaCount;
+            resourceInputs["resources"] = args?.resources;
+            resourceInputs["rollingUpdate"] = args?.rollingUpdate;
+            resourceInputs["servers"] = args?.servers;
+            resourceInputs["service"] = args?.service;
+            resourceInputs["serviceAccount"] = args?.serviceAccount;
+            resourceInputs["serviceType"] = args?.serviceType;
+            resourceInputs["terminationGracePeriodSeconds"] = args?.terminationGracePeriodSeconds;
+            resourceInputs["tolerations"] = args?.tolerations;
+            resourceInputs["zoneFiles"] = args?.zoneFiles;
             resourceInputs["status"] = undefined /*out*/;
         } else {
             resourceInputs["status"] = undefined /*out*/;
@@ -88,118 +88,118 @@ export interface CoreDNSArgs {
     /**
      * Affinity settings for pod assignment.
      */
-    affinity?: pulumi.Input<pulumiKubernetes.types.input.core.v1.Affinity>;
+    affinity?: pulumi.Input<pulumiKubernetes.types.input.core.v1.Affinity | undefined>;
     /**
      * Configue a cluster-proportional-autoscaler for coredns. See https://github.com/kubernetes-incubator/cluster-proportional-autoscaler.
      */
-    autoscaler?: pulumi.Input<inputs.CoreDNSAutoscalerArgs>;
+    autoscaler?: pulumi.Input<inputs.CoreDNSAutoscalerArgs | undefined>;
     /**
      * Create HorizontalPodAutoscaler object.
      */
-    autoscaling?: pulumi.Input<pulumiKubernetes.types.input.autoscaling.v2beta2.HorizontalPodAutoscalerSpec>;
+    autoscaling?: pulumi.Input<pulumiKubernetes.types.input.autoscaling.v2beta2.HorizontalPodAutoscalerSpec | undefined>;
     /**
      * Configure the CoreDNS Deployment.
      */
-    deployment?: pulumi.Input<inputs.CoreDNSDeploymentArgs>;
+    deployment?: pulumi.Input<inputs.CoreDNSDeploymentArgs | undefined>;
     /**
      * Optional array of secrets to mount inside coredns container. Possible usecase: need for secure connection with etcd backend. Optional array of mount points for extraVolumes.
      */
-    extraSecrets?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.VolumeMount>[]>;
+    extraSecrets?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.VolumeMount>[] | undefined>;
     /**
      * Optional array of mount points for extraVolumes.
      */
-    extraVolumeMounts?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.VolumeMount>[]>;
+    extraVolumeMounts?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.VolumeMount>[] | undefined>;
     /**
      * Optional array of extra volumes to create.
      */
-    extraVolumes?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.Volume>[]>;
+    extraVolumes?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.Volume>[] | undefined>;
     /**
      * HelmOptions is an escape hatch that lets the end user control any aspect of the Helm deployment. This exposes the entirety of the underlying Helm Release component args.
      */
-    helmOptions?: pulumi.Input<inputs.ReleaseArgs>;
+    helmOptions?: pulumi.Input<inputs.ReleaseArgs | undefined>;
     /**
      * Alternative configuration for HPA deployment if wanted.
      */
-    hpa?: pulumi.Input<inputs.CoreDNSHPAArgs>;
+    hpa?: pulumi.Input<inputs.CoreDNSHPAArgs | undefined>;
     /**
      * The image to pull.
      */
-    image?: pulumi.Input<inputs.CoreDNSImageArgs>;
+    image?: pulumi.Input<inputs.CoreDNSImageArgs | undefined>;
     /**
      * Specifies whether chart should be deployed as cluster-service or normal k8s app.
      */
-    isClusterService?: pulumi.Input<boolean>;
+    isClusterService?: pulumi.Input<boolean | undefined>;
     /**
      * Configure the liveness probe. To use the livenessProbe, the health plugin needs to be enabled in CoreDNS' server config.
      */
-    livenessProbe?: pulumi.Input<pulumiKubernetes.types.input.core.v1.Probe>;
+    livenessProbe?: pulumi.Input<pulumiKubernetes.types.input.core.v1.Probe | undefined>;
     /**
      * Node labels for pod assignment.
      */
-    nodeSelector?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    nodeSelector?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Optional Pod only Annotations.
      */
-    podAnnotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    podAnnotations?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Optional PodDisruptionBudget.
      */
-    podDisruptionBudget?: pulumi.Input<pulumiKubernetes.types.input.policy.v1.PodDisruptionBudgetSpec>;
+    podDisruptionBudget?: pulumi.Input<pulumiKubernetes.types.input.policy.v1.PodDisruptionBudgetSpec | undefined>;
     /**
      * Under heavy load it takes more that standard time to remove Pod endpoint from a cluster. This will delay termination of our pod by `preStopSleep`. To make sure kube-proxy has enough time to catch up.
      */
-    preStopSleep?: pulumi.Input<number>;
+    preStopSleep?: pulumi.Input<number | undefined>;
     /**
      * Optional priority class to be used for the coredns pods. Used for autoscaler if autoscaler.priorityClassName not set.
      */
-    priorityClassName?: pulumi.Input<string>;
+    priorityClassName?: pulumi.Input<string | undefined>;
     /**
      * Configure Prometheus installation.
      */
-    prometheus?: pulumi.Input<inputs.CoreDNSPrometheusArgs>;
+    prometheus?: pulumi.Input<inputs.CoreDNSPrometheusArgs | undefined>;
     /**
      * Configure CoreDNS RBAC resources.
      */
-    rbac?: pulumi.Input<inputs.CoreDNSRBACArgs>;
+    rbac?: pulumi.Input<inputs.CoreDNSRBACArgs | undefined>;
     /**
      * Configure the readiness probe. To use the readinessProbe, the health plugin needs to be enabled in CoreDNS' server config.
      */
-    readinessProbe?: pulumi.Input<pulumiKubernetes.types.input.core.v1.Probe>;
+    readinessProbe?: pulumi.Input<pulumiKubernetes.types.input.core.v1.Probe | undefined>;
     /**
      * Number of replicas.
      */
-    replicaCount?: pulumi.Input<number>;
+    replicaCount?: pulumi.Input<number | undefined>;
     /**
      * Container resource limits.
      */
-    resources?: pulumi.Input<pulumiKubernetes.types.input.core.v1.ResourceRequirements>;
-    rollingUpdate?: pulumi.Input<pulumiKubernetes.types.input.apps.v1.RollingUpdateDeployment>;
+    resources?: pulumi.Input<pulumiKubernetes.types.input.core.v1.ResourceRequirements | undefined>;
+    rollingUpdate?: pulumi.Input<pulumiKubernetes.types.input.apps.v1.RollingUpdateDeployment | undefined>;
     /**
      * Configuration for CoreDNS and plugins. Default zone is what Kubernetes recommends: https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options
      */
-    servers?: pulumi.Input<pulumi.Input<inputs.CoreDNSServerArgs>[]>;
+    servers?: pulumi.Input<pulumi.Input<inputs.CoreDNSServerArgs>[] | undefined>;
     /**
      * Configure CoreDNS Service parameters.
      */
-    service?: pulumi.Input<inputs.CoreDNSServiceArgs>;
+    service?: pulumi.Input<inputs.CoreDNSServiceArgs | undefined>;
     /**
      * Configure CoreDNS Service Account.
      */
-    serviceAccount?: pulumi.Input<inputs.CoreDNSServiceAccountArgs>;
+    serviceAccount?: pulumi.Input<inputs.CoreDNSServiceAccountArgs | undefined>;
     /**
      * Kubernetes Service type.
      */
-    serviceType?: pulumi.Input<string>;
+    serviceType?: pulumi.Input<string | undefined>;
     /**
      * Optional duration in seconds the pod needs to terminate gracefully.
      */
-    terminationGracePeriodSeconds?: pulumi.Input<number>;
+    terminationGracePeriodSeconds?: pulumi.Input<number | undefined>;
     /**
      * Tolerations for pod assignment.
      */
-    tolerations?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.Toleration>[]>;
+    tolerations?: pulumi.Input<pulumi.Input<pulumiKubernetes.types.input.core.v1.Toleration>[] | undefined>;
     /**
      * Configure custom Zone files.
      */
-    zoneFiles?: pulumi.Input<pulumi.Input<inputs.CoreDNSZoneFileArgs>[]>;
+    zoneFiles?: pulumi.Input<pulumi.Input<inputs.CoreDNSZoneFileArgs>[] | undefined>;
 }
