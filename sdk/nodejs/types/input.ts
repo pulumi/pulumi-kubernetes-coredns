@@ -11,208 +11,208 @@ export interface CoreDNSAutoscalerArgs {
     /**
      * Number of cores in the cluster per coredns replica.
      */
-    coresPerReplica?: pulumi.Input<number>;
+    coresPerReplica?: pulumi.Input<number | undefined>;
     /**
      * Enabled the cluster-proportional-autoscaler.
      */
-    enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean | undefined>;
     /**
      * The image to pull from for the autoscaler.
      */
-    image?: pulumi.Input<inputs.CoreDNSImageArgs>;
+    image?: pulumi.Input<inputs.CoreDNSImageArgs | undefined>;
     /**
      * Whether to include unschedulable nodes in the nodes/cores calculations - this requires version 1.8.0+ of the autoscaler.
      */
-    includeUnschedulableNodes?: pulumi.Input<boolean>;
+    includeUnschedulableNodes?: pulumi.Input<boolean | undefined>;
     /**
      * Max size of replicaCount
      */
-    max?: pulumi.Input<number>;
+    max?: pulumi.Input<number | undefined>;
     /**
      * Min size of replicaCount
      */
-    min?: pulumi.Input<number>;
+    min?: pulumi.Input<number | undefined>;
     /**
      * Number of nodes in the cluster per coredns replica.
      */
-    nodesPerReplica?: pulumi.Input<number>;
+    nodesPerReplica?: pulumi.Input<number | undefined>;
     /**
      * If true does not allow single points of failure to form.
      */
-    preventSinglePointFailure?: pulumi.Input<boolean>;
+    preventSinglePointFailure?: pulumi.Input<boolean | undefined>;
 }
 
 export interface CoreDNSDeploymentArgs {
     /**
      * Optionally disable the main deployment and its respective resources.
      */
-    enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean | undefined>;
     /**
      * Name of the deployment if deployment.enabled is true. Otherwise the name of an existing deployment for the autoscaler or HPA to target.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSHPAArgs {
-    enabled?: pulumi.Input<boolean>;
-    maxReplicas?: pulumi.Input<number>;
-    metrics?: pulumi.Input<pulumiKubernetes.types.input.autoscaling.v2beta2.MetricSpec>;
-    minReplicas?: pulumi.Input<number>;
+    enabled?: pulumi.Input<boolean | undefined>;
+    maxReplicas?: pulumi.Input<number | undefined>;
+    metrics?: pulumi.Input<pulumiKubernetes.types.input.autoscaling.v2beta2.MetricSpec | undefined>;
+    minReplicas?: pulumi.Input<number | undefined>;
 }
 
 export interface CoreDNSImageArgs {
     /**
      * Image pull policy.
      */
-    pullPolicy?: pulumi.Input<string>;
+    pullPolicy?: pulumi.Input<string | undefined>;
     /**
      * Specify container image pull secrets.
      */
-    pullSecrets?: pulumi.Input<pulumi.Input<string>[]>;
+    pullSecrets?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * The image repository to pull from.
      */
-    repository?: pulumi.Input<string>;
+    repository?: pulumi.Input<string | undefined>;
     /**
      * The image tag to pull from.
      */
-    tag?: pulumi.Input<string>;
+    tag?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSPrometheusArgs {
-    monitor?: pulumi.Input<inputs.CoreDNSPrometheusMonitorArgs>;
-    service?: pulumi.Input<inputs.CoreDNSPrometheusServiceArgs>;
+    monitor?: pulumi.Input<inputs.CoreDNSPrometheusMonitorArgs | undefined>;
+    service?: pulumi.Input<inputs.CoreDNSPrometheusServiceArgs | undefined>;
 }
 
 export interface CoreDNSPrometheusMonitorArgs {
     /**
      * Additional labels that can be used so ServiceMonitor will be discovered by Prometheus.
      */
-    additionalLabels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    additionalLabels?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Set this to true to create ServiceMonitor for Prometheus operator.
      */
-    enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean | undefined>;
     /**
      * Selector to select which namespaces the Endpoints objects are discovered from.
      */
-    namespace?: pulumi.Input<string>;
+    namespace?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSPrometheusServiceArgs {
     /**
      * Annotations to add to the metrics Service.
      */
-    annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * Set this to true to create Service for Prometheus metrics.
      */
-    enabled?: pulumi.Input<boolean>;
+    enabled?: pulumi.Input<boolean | undefined>;
 }
 
 export interface CoreDNSRBACArgs {
     /**
      * If true, create & use RBAC resources
      */
-    create?: pulumi.Input<boolean>;
+    create?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * If true, create and use PodSecurityPolicy
      */
-    pspEnable?: pulumi.Input<boolean>;
+    pspEnable?: pulumi.Input<boolean | undefined>;
 }
 
 export interface CoreDNSServerArgs {
     /**
      * the plugins to use for this server block.
      */
-    plugins?: pulumi.Input<pulumi.Input<inputs.CoreDNSServerPluginArgs>[]>;
+    plugins?: pulumi.Input<pulumi.Input<inputs.CoreDNSServerPluginArgs>[] | undefined>;
     /**
      * optional, defaults to "" (which equals 53 in CoreDNS).
      */
-    port?: pulumi.Input<number>;
+    port?: pulumi.Input<number | undefined>;
     /**
      * the `zones` block can be left out entirely, defaults to "."
      */
-    zones?: pulumi.Input<pulumi.Input<inputs.CoreDNSServerZoneArgs>[]>;
+    zones?: pulumi.Input<pulumi.Input<inputs.CoreDNSServerZoneArgs>[] | undefined>;
 }
 
 export interface CoreDNSServerPluginArgs {
     /**
      * if the plugin supports extra block style config, supply it here
      */
-    configBlock?: pulumi.Input<string>;
+    configBlock?: pulumi.Input<string | undefined>;
     /**
      * name of plugin, if used multiple times ensure that the plugin supports it!
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * list of parameters after the plugin
      */
-    parameters?: pulumi.Input<string>;
+    parameters?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSServerZoneArgs {
     /**
      * optional, defaults to "" (which equals "dns://" in CoreDNS)
      */
-    scheme?: pulumi.Input<string>;
+    scheme?: pulumi.Input<string | undefined>;
     /**
      * set this parameter to optionally expose the port on tcp as well as udp for the DNS protocol. Note that this will not work if you are also exposing tls or grpc on the same server.
      */
-    use_tcp?: pulumi.Input<boolean>;
+    use_tcp?: pulumi.Input<boolean | undefined>;
     /**
      * optional, defaults to "."
      */
-    zone?: pulumi.Input<string>;
+    zone?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSServiceArgs {
     /**
      * Annotations to add to service.
      */
-    annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * IP address to assign to service.
      */
-    clusterIP?: pulumi.Input<string>;
+    clusterIP?: pulumi.Input<string | undefined>;
     /**
      * External IP addresses.
      */
-    externalIPs?: pulumi.Input<pulumi.Input<string>[]>;
+    externalIPs?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
      * Enable client source IP preservation.
      */
-    externalTrafficPolicy?: pulumi.Input<string>;
+    externalTrafficPolicy?: pulumi.Input<string | undefined>;
     /**
      * IP address to assign to load balancer (if supported).
      */
-    loadBalancerIP?: pulumi.Input<string>;
+    loadBalancerIP?: pulumi.Input<string | undefined>;
     /**
      * The name of the Service. If not set, a name is generated using the fullname template.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSServiceAccountArgs {
-    annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    annotations?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
     /**
      * If true, create & use serviceAccount.
      */
-    create?: pulumi.Input<boolean>;
+    create?: pulumi.Input<boolean | undefined>;
     /**
      * The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 export interface CoreDNSZoneFileArgs {
-    contents?: pulumi.Input<string>;
-    domain?: pulumi.Input<string>;
-    string?: pulumi.Input<string>;
+    contents?: pulumi.Input<string | undefined>;
+    domain?: pulumi.Input<string | undefined>;
+    string?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -224,135 +224,135 @@ export interface ReleaseArgs {
     /**
      * If set, installation process purges chart on fail. `skipAwait` will be disabled automatically if atomic is used.
      */
-    atomic?: pulumi.Input<boolean>;
+    atomic?: pulumi.Input<boolean | undefined>;
     /**
      * Chart name to be installed. A path may be used.
      */
-    chart?: pulumi.Input<string>;
+    chart?: pulumi.Input<string | undefined>;
     /**
      * Allow deletion of new resources created in this upgrade when upgrade fails.
      */
-    cleanupOnFail?: pulumi.Input<boolean>;
+    cleanupOnFail?: pulumi.Input<boolean | undefined>;
     /**
      * Create the namespace if it does not exist.
      */
-    createNamespace?: pulumi.Input<boolean>;
+    createNamespace?: pulumi.Input<boolean | undefined>;
     /**
      * Run helm dependency update before installing the chart.
      */
-    dependencyUpdate?: pulumi.Input<boolean>;
+    dependencyUpdate?: pulumi.Input<boolean | undefined>;
     /**
      * Add a custom description
      */
-    description?: pulumi.Input<string>;
+    description?: pulumi.Input<string | undefined>;
     /**
      * Use chart development versions, too. Equivalent to version '>0.0.0-0'. If `version` is set, this is ignored.
      */
-    devel?: pulumi.Input<boolean>;
+    devel?: pulumi.Input<boolean | undefined>;
     /**
      * Prevent CRD hooks from, running, but run other hooks.  See helm install --no-crd-hook
      */
-    disableCRDHooks?: pulumi.Input<boolean>;
+    disableCRDHooks?: pulumi.Input<boolean | undefined>;
     /**
      * If set, the installation process will not validate rendered templates against the Kubernetes OpenAPI Schema
      */
-    disableOpenapiValidation?: pulumi.Input<boolean>;
+    disableOpenapiValidation?: pulumi.Input<boolean | undefined>;
     /**
      * Prevent hooks from running.
      */
-    disableWebhooks?: pulumi.Input<boolean>;
+    disableWebhooks?: pulumi.Input<boolean | undefined>;
     /**
      * Force resource update through delete/recreate if needed.
      */
-    forceUpdate?: pulumi.Input<boolean>;
+    forceUpdate?: pulumi.Input<boolean | undefined>;
     /**
      * Location of public keys used for verification. Used only if `verify` is true
      */
-    keyring?: pulumi.Input<string>;
+    keyring?: pulumi.Input<string | undefined>;
     /**
      * Run helm lint when planning.
      */
-    lint?: pulumi.Input<boolean>;
+    lint?: pulumi.Input<boolean | undefined>;
     /**
      * The rendered manifests as JSON. Not yet supported.
      */
-    manifest?: pulumi.Input<{[key: string]: any}>;
+    manifest?: pulumi.Input<{[key: string]: any} | undefined>;
     /**
      * Limit the maximum number of revisions saved per release. Use 0 for no limit.
      */
-    maxHistory?: pulumi.Input<number>;
+    maxHistory?: pulumi.Input<number | undefined>;
     /**
      * Release name.
      */
-    name?: pulumi.Input<string>;
+    name?: pulumi.Input<string | undefined>;
     /**
      * Namespace to install the release into.
      */
-    namespace?: pulumi.Input<string>;
+    namespace?: pulumi.Input<string | undefined>;
     /**
      * Postrender command to run.
      */
-    postrender?: pulumi.Input<string>;
+    postrender?: pulumi.Input<string | undefined>;
     /**
      * Perform pods restart during upgrade/rollback.
      */
-    recreatePods?: pulumi.Input<boolean>;
+    recreatePods?: pulumi.Input<boolean | undefined>;
     /**
      * If set, render subchart notes along with the parent.
      */
-    renderSubchartNotes?: pulumi.Input<boolean>;
+    renderSubchartNotes?: pulumi.Input<boolean | undefined>;
     /**
      * Re-use the given name, even if that name is already used. This is unsafe in production
      */
-    replace?: pulumi.Input<boolean>;
+    replace?: pulumi.Input<boolean | undefined>;
     /**
      * Specification defining the Helm chart repository to use.
      */
-    repositoryOpts?: pulumi.Input<inputs.RepositoryOptsArgs>;
+    repositoryOpts?: pulumi.Input<inputs.RepositoryOptsArgs | undefined>;
     /**
      * When upgrading, reset the values to the ones built into the chart.
      */
-    resetValues?: pulumi.Input<boolean>;
+    resetValues?: pulumi.Input<boolean | undefined>;
     /**
      * Names of resources created by the release grouped by "kind/version".
      */
-    resourceNames?: pulumi.Input<{[key: string]: pulumi.Input<pulumi.Input<string>[]>}>;
+    resourceNames?: pulumi.Input<{[key: string]: pulumi.Input<pulumi.Input<string>[]>} | undefined>;
     /**
      * When upgrading, reuse the last release's values and merge in any overrides. If 'resetValues' is specified, this is ignored
      */
-    reuseValues?: pulumi.Input<boolean>;
+    reuseValues?: pulumi.Input<boolean | undefined>;
     /**
      * By default, the provider waits until all resources are in a ready state before marking the release as successful. Setting this to true will skip such await logic.
      */
-    skipAwait?: pulumi.Input<boolean>;
+    skipAwait?: pulumi.Input<boolean | undefined>;
     /**
      * If set, no CRDs will be installed. By default, CRDs are installed if not already present.
      */
-    skipCrds?: pulumi.Input<boolean>;
+    skipCrds?: pulumi.Input<boolean | undefined>;
     /**
      * Time in seconds to wait for any individual kubernetes operation.
      */
-    timeout?: pulumi.Input<number>;
+    timeout?: pulumi.Input<number | undefined>;
     /**
      * List of assets (raw yaml files). Content is read and merged with values. Not yet supported.
      */
-    valueYamlFiles?: pulumi.Input<pulumi.Input<pulumi.asset.Asset | pulumi.asset.Archive>[]>;
+    valueYamlFiles?: pulumi.Input<pulumi.Input<pulumi.asset.Asset | pulumi.asset.Archive>[] | undefined>;
     /**
      * Custom values set for the release.
      */
-    values?: pulumi.Input<{[key: string]: any}>;
+    values?: pulumi.Input<{[key: string]: any} | undefined>;
     /**
      * Verify the package before installing it.
      */
-    verify?: pulumi.Input<boolean>;
+    verify?: pulumi.Input<boolean | undefined>;
     /**
      * Specify the exact chart version to install. If this is not specified, the latest version is installed.
      */
-    version?: pulumi.Input<string>;
+    version?: pulumi.Input<string | undefined>;
     /**
      * Will wait until all Jobs have been completed before marking the release as successful. This is ignored if `skipAwait` is enabled.
      */
-    waitForJobs?: pulumi.Input<boolean>;
+    waitForJobs?: pulumi.Input<boolean | undefined>;
 }
 
 /**
@@ -362,25 +362,25 @@ export interface RepositoryOptsArgs {
     /**
      * The Repository's CA File
      */
-    caFile?: pulumi.Input<string>;
+    caFile?: pulumi.Input<string | undefined>;
     /**
      * The repository's cert file
      */
-    certFile?: pulumi.Input<string>;
+    certFile?: pulumi.Input<string | undefined>;
     /**
      * The repository's cert key file
      */
-    keyFile?: pulumi.Input<string>;
+    keyFile?: pulumi.Input<string | undefined>;
     /**
      * Password for HTTP basic authentication
      */
-    password?: pulumi.Input<string>;
+    password?: pulumi.Input<string | undefined>;
     /**
      * Repository where to locate the requested chart. If is a URL the chart is installed without installing the repository.
      */
-    repo?: pulumi.Input<string>;
+    repo?: pulumi.Input<string | undefined>;
     /**
      * Username for HTTP basic authentication
      */
-    username?: pulumi.Input<string>;
+    username?: pulumi.Input<string | undefined>;
 }
