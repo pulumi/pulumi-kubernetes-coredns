@@ -1,3 +1,0 @@
-name: simple-coredns-ts
-runtime: nodejs
-description: A simple Kubernetes CoreDNS installation
